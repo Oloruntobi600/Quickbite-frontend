@@ -37,8 +37,25 @@ const cartReducer = (state = initialState, action) => {
                     loading: false,
                     cartItems: [...state.cartItems, action.payload.item], // Ensure item is correctly integrated
             };
-            
-        case actionTypes.UPDATE_CARTITEM_REQUEST:  
+
+        case actionTypes.UPDATE_CARTITEM_SUCCESS:
+            const cartItems = [...state.cart.item];
+            const cartItemIndex = cartItems.findIndex(item => item.id === action.payload.id);
+            cartItems.splice(cartItemIndex, 1, action.payload);
+            const newState = {
+                ...state,
+                loading: false,
+                cart: {
+                    ...state.cart,
+                    item: cartItems,
+                    total: cartItems.reduce((acc, value) => {
+                       return acc + value.totalPrice
+                    }, 0),
+                },
+            };
+
+            return newState;
+        case actionTypes.UPDATE_CARTITEM_REQUEST:    
         console.log("UPDATE_CARTITEM_SUCCESS payload:", action.payload);
         return {
             ...state,

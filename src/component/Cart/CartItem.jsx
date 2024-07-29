@@ -10,15 +10,16 @@ const CartItem = ({ item }) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
 
-  console.log("checking item ", item)
-
   const handleIncrease = () => {
     setQuantity(prevQuantity => {
       const newQuantity = prevQuantity + 1;
-      dispatch(updateCartItem({
-        cartItem: { ...item, quantity: newQuantity },
-        token: jwt
-      }));
+
+      const cartPayload = {
+        cartItemId: item.id,
+        quantity: newQuantity
+      };
+
+      dispatch(updateCartItem(cartPayload));
       return newQuantity;
     });
   };
@@ -27,10 +28,13 @@ const CartItem = ({ item }) => {
     setQuantity(prevQuantity => {
       if (prevQuantity > 1) {
         const newQuantity = prevQuantity - 1;
-        dispatch(updateCartItem({
-          cartItem: { ...item, quantity: newQuantity },
-          token: jwt
-        }));
+
+        const cartPayload = {
+          cartItemId: item.id,
+          quantity: newQuantity
+        };
+
+        dispatch(updateCartItem(cartPayload));
         return newQuantity;
       }
       return prevQuantity;
@@ -58,7 +62,7 @@ const CartItem = ({ item }) => {
                 <div className="w-5 h-5 text-xs flex items-center justify-center">
                   {quantity}
                 </div>
-                <IconButton onClick={handleIncrease}>
+                <IconButton onClick={(handleIncrease)}>
                   <AddCircleOutlineIcon />
                 </IconButton>
               </div>

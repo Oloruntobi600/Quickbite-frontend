@@ -60,9 +60,9 @@ export const updateCartItem = (reqData) => {
         dispatch({ type: UPDATE_CARTITEM_REQUEST });
         const token = localStorage.getItem("jwt"); // Retrieve token from localStorage
         try {
-            console.log("Request data being sent: ", reqData.data);
+            // console.log("Request data being sent/: ", reqData.data);
 
-            const response = await api.put(`/api/cart-item/update`, reqData.data, {
+            const response = await api.put(`/api/cart-item/update`, reqData, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Ensure token is set
                     'Content-Type': 'application/json'

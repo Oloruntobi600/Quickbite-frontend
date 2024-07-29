@@ -21,7 +21,7 @@ export const Navbar = () => {
     };
 
     // Ensure cart and cart items are defined
-    const cartItemsLength = cart?.cart?.items?.length || 5;
+    const cartItemsLength = cart?.cart?.item?.length || 0;
 
     console.log("Auth: ", auth);
     console.log("Cart: ", cart);
