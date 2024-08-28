@@ -28,14 +28,17 @@ const AdminSideBar = ({handleClose}) => {
     const navigate=useNavigate();
     const dispatch=useDispatch
 
-    const handleNavigate=(item)=>{
-      navigate(`/admin/restaurants${item.path}`)
-      if(item.title==="Logout"){
-          navigate("/")
-          dispatch(logout())
-          handleClose()
-}
-    }
+    const handleNavigate = (item) => {
+      if (item.title === "Logout") {
+          dispatch(logout());
+          handleClose();
+          navigate("/"); // Logout path
+      } else {
+        navigate(`/admin/restaurants${item.path}`); // Adjust path if necessary
+      }
+      console.log("Navigating to:", `/admin/restaurants${item.path}`);
+  };
+
   return (
     <div>
       <>
@@ -58,7 +61,7 @@ const AdminSideBar = ({handleClose}) => {
 
       </Drawer> */}
 
-<Drawer
+        <Drawer
             variant={isSmallScreen ? "temporary" : "permanent"}
             onClose={handleClose}
             open={true}

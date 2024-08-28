@@ -9,9 +9,10 @@ import {
   
   const initialState = {
     user: null,
+    isAuthenticated: false,
     isLoading: false,
     error: null,
-    jwt: null,
+    jwt: localStorage.getItem('jwt') || null,
     favorites: [],
     success: null,
   };
@@ -26,7 +27,7 @@ import {
       
       case REGISTER_SUCCESS:
       case LOGIN_SUCCESS:
-        return { ...state, isLoading: false, jwt: action.payload, success: 'Register success' };
+        return { ...state, isLoading: false, jwt: action.payload, success: 'Register success' , isAuthenticated: true};
 
         case GET_USER_SUCCESS:
         return { ...state, isLoading: false, user: action.payload, favorites:action.payload.favorites };
@@ -45,7 +46,7 @@ import {
       case LOGIN_FAILURE:
       case GET_USER_FAILURE:
       case ADD_TO_FAVORITE_FAILURE:
-        return { ...state, isLoading: false, error: action.payload, success: null };
+        return { ...state, isLoading: false, error: action.payload };
       
       case LOGOUT:
         return initialState;

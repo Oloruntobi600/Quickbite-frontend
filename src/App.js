@@ -7,15 +7,34 @@ import { darkTheme } from './Theme/DarkTheme';
 import CustomerRoute from './Routers/CustomerRoute';
 import { findCart } from './component/State/Cart/Action';
 
+// function App() {
+//   const dispatch = useDispatch();
+//   const jwt = localStorage.getItem('jwt');
+//   const { auth } = useSelector((store) => store);
+
+//   useEffect(() => {
+//     dispatch(getUser(auth.jwt || jwt));
+//     dispatch(findCart(jwt))
+//   }, [auth.jwt]);
+
+//   return (
+//     <ThemeProvider theme={darkTheme}>
+//       <CssBaseline />
+//       <CustomerRoute />
+//     </ThemeProvider>
+//   );
+// }
+
 function App() {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem('jwt');
-  const { auth } = useSelector((store) => store);
+  const userJwt = useSelector((state) => state.auth.jwt);  // Directly accessing jwt
 
   useEffect(() => {
-    dispatch(getUser(auth.jwt || jwt));
-    dispatch(findCart(jwt))
-  }, [auth.jwt]);
+    console.log('JWT available:', userJwt || jwt);
+    dispatch(getUser(userJwt || jwt)); // Using the selected jwt
+    dispatch(findCart(userJwt || jwt));
+  }, [userJwt, jwt, dispatch]);
 
   return (
     <ThemeProvider theme={darkTheme}>

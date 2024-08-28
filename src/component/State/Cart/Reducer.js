@@ -22,6 +22,7 @@ const cartReducer = (state = initialState, action) => {
                 loading: true,
                 error: null,
             };
+
         case actionTypes.FIND_CART_SUCCESS:
             console.log("FIND_CART_SUCCESS payload:", action.payload);
             return {
@@ -39,31 +40,31 @@ const cartReducer = (state = initialState, action) => {
             };
 
         case actionTypes.UPDATE_CARTITEM_SUCCESS:
-            const cartItems = [...state.cart.item];
-            const cartItemIndex = cartItems.findIndex(item => item.id === action.payload.id);
-            cartItems.splice(cartItemIndex, 1, action.payload);
-            const newState = {
-                ...state,
-                loading: false,
-                cart: {
-                    ...state.cart,
-                    item: cartItems,
-                    total: cartItems.reduce((acc, value) => {
-                       return acc + value.totalPrice
-                    }, 0),
-                },
-            };
+          console.log("UPDATE_CARTITEM_SUCCESS payload:", action.payload);
+      const cartItems = [...state.cart.item];
+      const cartItemIndex = cartItems.findIndex(item => item.id === action.payload.id);
+      cartItems.splice(cartItemIndex, 1, action.payload);
+      const newState = {
+        ...state,
+        loading: false,
+        cart: {
+          ...state.cart,
+          item: cartItems,
+          total: cartItems.reduce((acc, value) => acc + value.totalPrice, 0),
+        },
+      };
+      return newState;
 
-            return newState;
-        case actionTypes.UPDATE_CARTITEM_REQUEST:    
-        console.log("UPDATE_CARTITEM_SUCCESS payload:", action.payload);
-        return {
-            ...state,
-                loading: false,
-                cartItems: state.cartItems.map((item) =>
-                    item.id === action.payload.id ? { ...item, ...action.payload } : item
-                ),
-            };
+    // case actionTypes.UPDATE_CARTITEM_REQUEST:    
+    //   console.log("UPDATE_CARTITEM_SUCCESS payload:", action.payload);
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     cartItems: state.cartItems.map((item) =>
+    //       item.id === action.payload.id ? { ...item, ...action.payload } : item
+    //     ),
+    //   };
+
         case actionTypes.REMOVE_CARTITEM_SUCCESS:
             console.log("REMOVE_CARTITEM_SUCCESS payload:", action.payload);
             return {
@@ -73,6 +74,7 @@ const cartReducer = (state = initialState, action) => {
             item.id !== action.payload
             ),
          };
+
          case actionTypes.FIND_CART_FAILURE:
          case actionTypes.UPDATE_CARTITEM_FAILURE:
          case actionTypes.ADD_ITEMS_TO_CART_FAILURE:
@@ -82,6 +84,7 @@ const cartReducer = (state = initialState, action) => {
                 loading: false,
                 error: action.payload,
             };
+
         case LOGOUT:
             localStorage.removeItem("jwt");
             return { ...state, cartItems:[], cart:null, success: "logout success"};

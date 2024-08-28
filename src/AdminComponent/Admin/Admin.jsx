@@ -10,9 +10,7 @@ import RestaurantDashboard from '../Dashboard/Dashboard'
 import Orders from '../Orders/Orders'
 import CreateMenuForm from '../Menu/CreateMenuForm'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRestaurantById, getRestaurantsCategory } from '../../component/State/Authentication/restaurant/Action'
-import { getMenuItemsByRestaurantId } from '../../component/State/Menu/Action'
-import { getUsersOrders } from '../../component/State/Order/Action'
+import { getRestaurantsCategory } from '../../component/State/Authentication/restaurant/Action'
 import { fetchRestaurantsOrder } from '../../component/State/Restaurant Order/Action'
 
 const Admin = () => {

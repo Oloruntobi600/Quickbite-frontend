@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import Profile from '../component/Profile/Profile';
 import Home from '../component/Home/Home';
 import Auth from '../component/Auth/Auth';
+import PaymentSuccess from '../component/PaymentSuccess/PaymentSuccess';
 
 const CustomerRoute = () => {
   return (
@@ -16,6 +17,7 @@ const CustomerRoute = () => {
         <Route path='/account/register' element={<Home />} />
         <Route path='/restaurant/:city/:title/:id' element={<RestaurantDetails />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/payment' element={<PaymentSuccess />} /> 
         <Route path='/my-profile/*' element={<Profile />} />
       </Routes>
       <Auth/>

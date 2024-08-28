@@ -4,20 +4,41 @@ import CreateRestaurantForm from '../AdminComponent/CreateRestaurantForm/CreateR
 import Admin from '../AdminComponent/Admin/Admin'
 import { useSelector } from 'react-redux'
 
+// const AdminRoute = () => {
+//   const {restaurant}=useSelector(store=>store)
+//   return (
+//     <div>
+//       <Routes>
+//         <Route 
+//         path='/*' 
+//         element={
+//           !restaurant.usersRestaurant? <CreateRestaurantForm/> :<Admin/>
+//           }
+//           ></Route>
+//            <Route path='/payment' element={<PaymentSuccess />} /> 
+           
+//       </Routes>
+//     </div>
+//   )
+// }
+
+// export default AdminRoute
+
 const AdminRoute = () => {
-  const {restaurant}=useSelector(store=>store)
+  const { restaurant } = useSelector(store => store);
   return (
     <div>
       <Routes>
-        <Route 
-        path='/*' 
-        element={
-          !restaurant.usersRestaurant? <CreateRestaurantForm/> :<Admin/>
+        <Route
+          path='/*'
+          element={
+            !restaurant.usersRestaurant ? <CreateRestaurantForm /> : <Admin />
           }
-          ></Route>
+        />
+        <Route path='/payment' element={<PaymentSuccess />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default AdminRoute
+export default AdminRoute;
