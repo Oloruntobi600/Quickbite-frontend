@@ -7,19 +7,22 @@ import { getAllRestaurantsAction } from "../State/Authentication/restaurant/Acti
 import { useNavigate } from "react-router-dom";
 import { findCart } from "../State/Cart/Action";
 
-const restaurants=[1,1,1,1,1,1,1,1]
 const Home = () => {
         const dispatch=useDispatch()
         const jwt=localStorage.getItem("jwt")
-        const {restaurant}=useSelector(store=>store)
+        // const {restaurant}=useSelector(store=>store)
+        const restaurant = useSelector(state => state.restaurant);
         const navigate=useNavigate()
 
         console.log("restaurant", restaurant)
 
-        useEffect(()=>{
-            dispatch(getAllRestaurantsAction(jwt))
+        // useEffect(()=>{
+        //     dispatch(getAllRestaurantsAction(jwt))
            
-        }, [])
+        // }, [])
+        useEffect(() => {
+            dispatch(getAllRestaurantsAction(jwt));
+        }, [dispatch, jwt]);
 
     
     return (
