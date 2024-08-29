@@ -1,4 +1,4 @@
-import { API_URL, api} from "../../../config/api";
+import { api } from "../../config/api";
 import { CREATE_INGREDIENT_CATEGORY_SUCCESS, CREATE_INGREDIENT_SUCCESS, GET_INGREDIENT_CATEGORY_SUCCESS, GET_INGREDIENTS, UPDATE_STOCK } from "./ActionTypes";
 
 export const getIngredientsOfRestaurant = ({ id, jwt}) => {

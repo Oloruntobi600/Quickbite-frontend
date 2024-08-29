@@ -8,7 +8,7 @@ import {
     GET_RESTAURANTS_ORDER_SUCCESS,
     GET_RESTAURANTS_ORDER_FAILURE,
 } from "./ActionTypes";
-import { api } from "../../../config/api.js";
+import { api } from "../../config/api";
 
 export const updateOrderStatus = ({orderId, orderStatus,jwt}) => {
     return async (dispatch) => {
@@ -52,7 +52,7 @@ export const fetchRestaurantsOrder = ({restaurantId, orderStatus,jwt}) => {
                }
             );
 
-            const orders = data;
+            const orders = response?.data;
             console.log("restaurants order ------- ", orders);
             dispatch({
                 type: GET_RESTAURANTS_ORDER_SUCCESS,

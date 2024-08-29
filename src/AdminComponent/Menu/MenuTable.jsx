@@ -72,10 +72,10 @@ const MenuTable = () => {
               <TableCell component="th" scope="row">
               <Avatar src={item.images[0]}></Avatar>
               </TableCell>
-              <TableCell align="right">{item.name}</TableCell>
+              <TableCell align="right">{item?.name}</TableCell>
               <TableCell align="right">
-              {item.ingredients.map((ingredient) => (
-  <Chip key={ingredient.id} label={ingredient.name} />
+              {item?.ingredients.map((ingredient) => (
+  <Chip key={ingredient?.id} label={ingredient?.name} />
 ))}
               </TableCell>
               <TableCell align="right">₦{item.price}</TableCell>

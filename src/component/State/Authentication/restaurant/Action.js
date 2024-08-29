@@ -54,7 +54,7 @@ export const getAllRestaurantsAction = (token) => {
             dispatch({ type: GET_ALL_RESTAURANTS_SUCCESS,payload:data });
             console.log("all restaurant ", data);
         } catch (error) {
-            console.log("catch error",error)
+            console.log("Error Fetching Restaurant",error)
             dispatch({ type: GET_ALL_RESTAURANTS_FAILURE,payload:error });
         }
     };
@@ -71,7 +71,7 @@ export const getRestaurantById = (reqData) => {
             });
         dispatch({ type: GET_RESTAURANT_BY_ID_SUCCESS,payload:response.data }); 
         }catch (error) {
-            console.log("error", error)
+            console.log("Error fetching restaurant by ID", error)
         dispatch({ type: GET_RESTAURANT_BY_ID_FAILURE,payload:error });
         }
     };
@@ -80,16 +80,17 @@ export const getRestaurantById = (reqData) => {
 export const getRestaurantByUSerId = (jwt) => {
     return async (dispatch) => {
         dispatch({ type: GET_RESTAURANT_BY_USER_ID_REQUEST });
+        console.log("Dispatching getRestaurantByUSerId with JWT:", jwt); // Log JWT
         try {
             const {data} = await api.get(`api/admin/restaurants/user`,{
               headers: {
                 Authorization: `Bearer ${jwt}`,
             },  
             });
-            console.log("get restaurant by user id ", data);
+            console.log("Received data from API:", data); // Log API response
         dispatch({ type: GET_RESTAURANT_BY_USER_ID_SUCCESS,payload: data }); 
         }catch (error) {
-            console.log("error", error)
+            console.error("Error fetching restaurant by user ID:", error); // Log error
         dispatch({
             type:GET_RESTAURANT_BY_USER_ID_FAILURE,
             payload:error.message,
@@ -100,6 +101,7 @@ export const getRestaurantByUSerId = (jwt) => {
 
 export const createRestaurant = (reqData) => {
     console.log("token-----------", reqData.token);
+    console.log("Request Data:", reqData.data);
     return async (dispatch) => {
         dispatch({ type: CREATE_RESTAURANT_REQUEST });
         try {
@@ -267,7 +269,10 @@ export const createCategoryAction = ({ reqData, jwt }) => {
         dispatch({ type: CREATE_CATEGORY_REQUEST });
 
         try {
-            const res = await api.post(`api/admin/category`,reqData, {
+            const res = await api.post(`api/admin/category`, {
+                name: reqData.name,
+                restaurantId: 1,
+            }, {
               headers: {
                 Authorization: `Bearer ${jwt}`,
                 },  

@@ -15,7 +15,7 @@ const CreateFoodCategoryForm = () => {
         const data={
             name: formData.categoryName,
             restaurantId:{
-                id:1
+                id:restaurant.usersRestaurant?.id, 
             },
         };
         dispatch(createCategoryAction({reqData:data,jwt:localStorage.getItem("jwt")}))

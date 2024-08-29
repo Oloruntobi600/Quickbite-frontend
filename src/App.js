@@ -6,6 +6,7 @@ import { getUser } from './component/State/Authentication/Action';
 import { darkTheme } from './Theme/DarkTheme';
 import CustomerRoute from './Routers/CustomerRoute';
 import { findCart } from './component/State/Cart/Action';
+import Routers from './Routers/Routers';
 
 // function App() {
 //   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <CustomerRoute />
+      <Routers />
     </ThemeProvider>
   );
 }

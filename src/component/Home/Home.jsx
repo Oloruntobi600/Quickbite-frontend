@@ -46,9 +46,15 @@ const Home = () => {
             <section className='px-5 lg:px-20 pt-10'>
                 <h1 className='text-2x1 font-semibold text-gray-400 pb-8'> Order From Our Handpicked Favorites</h1>
                 <div className='flex flex-wrap items-center justify-around gap-5'>
-                    {
+                    {/* {
                         restaurant.restaurants.map((item)=><RestaurantCard item={item}/>)
-                    }
+                    } */}
+                     {restaurant.restaurants.map((item) => (
+                        <RestaurantCard 
+                            key={item.id}  // Add a unique key prop here
+                            item={item} 
+                        />
+                    ))}
                 </div>
             </section>
         </div>

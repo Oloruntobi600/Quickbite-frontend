@@ -18,8 +18,17 @@ const MultiItemCarousel = () => {
       };
     return (
         <div>
-            <Slider {...settings}>
+            {/* <Slider {...settings}>
                 {topMeels.map((item) =><CarouselItem image={item.image} title={item.title}/>)}
+            </Slider> */}
+             <Slider {...settings}>
+                {topMeels.map((item, index) => (
+                    <CarouselItem
+                        key={index}  // Add a unique key prop here
+                        image={item.image}
+                        title={item.title}
+                    />
+                ))}
             </Slider>
         </div>
     )
