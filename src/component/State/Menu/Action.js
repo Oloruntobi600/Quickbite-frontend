@@ -38,26 +38,66 @@ export const createMenuItem = ({menu, jwt}) => {
     };
 };
 
+// export const getMenuItemsByRestaurantId = (reqData) => {
+//     return async (dispatch) => {
+//         dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST});
+//         try {
+//             const { data } = await api.get(
+//                 `/api/food/restaurant/${reqData.restaurantId}?vegetarian=${reqData.vegetarian}&nonVeg=${reqData.nonVeg}&seasonal=${reqData.seasonal}&food_category=${reqData.foodCategory}`,
+//                 {
+//                     headers: {
+//                         Authorization: `Bearer ${reqData.jwt}`,
+//                     },
+//                 }
+//             );
+//                 console.log("menu item by restaurants ", data);
+//                 dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, payload:data});
+//         } catch (error) {
+//             console.log("catch error", error);
+//             dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE,payload:error});
+//         }
+//     };
+// };
 export const getMenuItemsByRestaurantId = (reqData) => {
     return async (dispatch) => {
-        dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST});
+        dispatch({ type: GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST });
+
+        const vegetarian = reqData.vegetarian !== undefined ? reqData.vegetarian : false;
+        const nonVeg = reqData.nonVeg !== undefined ? reqData.nonVeg : false;
+        const seasonal = reqData.seasonal !== undefined ? reqData.seasonal : false;
+        const foodCategory = reqData.foodCategory || '';
+
+        const restaurantId = reqData.restaurantId;
+
+        if (!restaurantId || isNaN(restaurantId)) {
+            console.error("Invalid restaurantId:", restaurantId);
+            dispatch({ type: GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE, payload: new Error("Invalid restaurant ID") });
+            return;
+        }
+
         try {
             const { data } = await api.get(
-                `/api/food/restaurant/${reqData.restaurantId}?vegetarian=${reqData.vegetarian}&nonVeg=${reqData.nonVeg}&seasonal=${reqData.seasonal}&food_category=${reqData.foodCategory}`,
+                `/api/food/restaurant/${restaurantId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${reqData.jwt}`,
                     },
+                    params: {
+                        vegetarian,
+                        nonVeg,
+                        seasonal,
+                        food_category: foodCategory
+                    }
                 }
             );
-                console.log("menu item by restaurants ", data);
-                dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, payload:data});
+            dispatch({ type: GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, payload: data });
         } catch (error) {
-            console.log("catch error", error);
-            dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE,payload:error});
+            dispatch({ type: GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE, payload: error });
         }
     };
 };
+
+
 
 export const searchMenuItem = ({keyword, jwt}) => {
     return async (dispatch) => {

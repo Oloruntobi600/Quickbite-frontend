@@ -15,6 +15,10 @@ export const updateOrderStatus = ({orderId, orderStatus,jwt}) => {
         try {
             dispatch({type:UPDATE_ORDER_STATUS_REQUEST});
 
+            if (!orderId || !orderStatus) {
+                throw new Error("Invalid order ID or status");
+            }
+
             const response = await api.put(
                 `/api/admin/orders/${orderId}/${orderStatus}`, {} ,{
                  headers: {
@@ -24,9 +28,6 @@ export const updateOrderStatus = ({orderId, orderStatus,jwt}) => {
             );
 
             const updatedOrder = response.data;
-
-            console.log("updated order ", updatedOrder);
-
             dispatch({
                 type: UPDATE_ORDER_STATUS_SUCCESS,
                 payload: updatedOrder,
@@ -43,6 +44,10 @@ export const fetchRestaurantsOrder = ({restaurantId, orderStatus,jwt}) => {
         try {
             dispatch({type:GET_RESTAURANTS_ORDER_REQUEST});
 
+            if (!restaurantId || typeof restaurantId !== 'number') {
+                throw new Error("Invalid restaurant ID");
+            }
+
             const response = await api.get(
                 `/api/admin/order/restaurant/${restaurantId}` ,{
                  params: { order_status:orderStatus},
@@ -53,7 +58,6 @@ export const fetchRestaurantsOrder = ({restaurantId, orderStatus,jwt}) => {
             );
 
             const orders = response?.data;
-            console.log("restaurants order ------- ", orders);
             dispatch({
                 type: GET_RESTAURANTS_ORDER_SUCCESS,
                 payload: orders,

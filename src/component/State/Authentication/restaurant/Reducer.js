@@ -143,6 +143,7 @@ const restaurantReducer = (state = initialState, action) => {
         case actionTypes.DELETE_RESTAURANT_REQUEST:
         case actionTypes.UPDATE_RESTAURANT_REQUEST:
         case actionTypes.GET_RESTAURANT_BY_ID_REQUEST:
+        case actionTypes.GET_RESTAURANT_BY_USER_ID_REQUEST:
         case actionTypes.CREATE_CATEGORY_REQUEST:
         case actionTypes.GET_RESTAURANT_CATEGORY_REQUEST:
             return {
@@ -173,10 +174,50 @@ const restaurantReducer = (state = initialState, action) => {
                 error: null,
             };
 
+        // case actionTypes.GET_RESTAURANT_BY_USER_ID_SUCCESS:
+        //     console.log("Reducer handling GET_RESTAURANT_BY_USER_ID_SUCCESS with payload:", action.payload);
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //         usersRestaurant: action.payload,  // Ensure payload is assigned correctly
+        //         error: null,
+        //     };
+
+        // case 'GET_RESTAURANT_BY_USER_ID_SUCCESS':
+        //     if (action.payload) {
+        //         return {
+        //             ...state,
+        //             loading: false,
+        //             usersRestaurant: action.payload, // Update based on actual data structure
+        //             error: null,
+        //         };
+        //     } else {
+        //         return {
+        //             ...state,
+        //             loading: false,
+        //             error: 'No data received',
+        //         };
+        //     }
+        
         case actionTypes.GET_RESTAURANT_BY_USER_ID_SUCCESS:
+    return {
+        ...state,
+        loading: false,
+        usersRestaurant: action.payload,
+        error: null,
+    };
+
+
         case actionTypes.UPDATE_RESTAURANT_STATUS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                usersRestaurant: action.payload,
+                error: null,
+            };
+
+
         case actionTypes.UPDATE_RESTAURANT_SUCCESS:
-            console.log("Reducer handling GET_RESTAURANT_BY_USER_ID_SUCCESS with payload:", action.payload);
             return {
                 ...state,
                 loading: false,
@@ -247,6 +288,7 @@ const restaurantReducer = (state = initialState, action) => {
         case actionTypes.DELETE_RESTAURANT_FAILURE:
         case actionTypes.UPDATE_RESTAURANT_FAILURE:
         case actionTypes.GET_RESTAURANT_BY_ID_FAILURE:
+        case actionTypes.GET_RESTAURANT_BY_USER_ID_FAILURE:
         case actionTypes.CREATE_EVENTS_FAILURE:
         case actionTypes.CREATE_CATEGORY_FAILURE:
         case actionTypes.GET_RESTAURANT_CATEGORY_FAILURE:

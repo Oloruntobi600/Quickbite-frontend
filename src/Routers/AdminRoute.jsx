@@ -4,7 +4,7 @@ import CreateRestaurantForm from '../AdminComponent/CreateRestaurantForm/CreateR
 import { useDispatch, useSelector } from 'react-redux'
 import Admin from '../AdminComponent/Admin/Admin'
 import PaymentSuccess from '../component/PaymentSuccess/PaymentSuccess'
-import { getRestaurantByUSerId } from '../component/State/Authentication/restaurant/Action'
+import { getRestaurantByUserId, getRestaurantByUSerId } from '../component/State/Authentication/restaurant/Action'
 
 // const AdminRoute = () => {
 //   const {restaurant}=useSelector(store=>store)
@@ -29,20 +29,22 @@ import { getRestaurantByUSerId } from '../component/State/Authentication/restaur
 const AdminRoute = () => {
   const dispatch = useDispatch();
   const restaurant = useSelector(state => state.restaurant);
-  const usersRestaurant = restaurant.usersRestaurant; // Extract usersRestaurant directly from the restaurant state
+  const { usersRestaurant, restaurants, } = useSelector(state => state.restaurant);
+   // Extract usersRestaurant directly from the restaurant state
   // const jwt = localStorage.getItem('jwtToken'); // Replace with actual jwt logic or retrieve from the state
   // const jwt = useSelector(state => state.auth.jwt);
   const jwt=localStorage.getItem("jwt")
+  console.log("JWT from localStorage:", jwt);
 
-  console.log("Current restaurant state in AdminRoute:", restaurant);
+  console.log("Current restaurant state in AdminRoute:", usersRestaurant);
 
   useEffect(() => {
-    if (jwt && !usersRestaurant) { // Check if usersRestaurant is null before fetching
-      console.log("Fetching restaurant data with JWT:", jwt);
-      dispatch(getRestaurantByUSerId(jwt)); // Dispatching action to fetch user's restaurant
+    console.log("Dispatching getRestaurantByUserId with JWT:", jwt);
+    if (!usersRestaurant) {
+      dispatch(getRestaurantByUserId(jwt));
     }
-  }, [dispatch, usersRestaurant, jwt]); // Ensure dispatch, usersRestaurant, and jwt are in the dependency array
-
+  }, [dispatch, jwt, usersRestaurant]);
+  console.log("Current restaurant state in AdminRoute:", restaurant);
   return (
     <div>
       {/* <Routes>
@@ -55,13 +57,20 @@ const AdminRoute = () => {
         <Route path='/payment' element={<PaymentSuccess />} />
       </Routes> */}
       <Routes>
-        <Route
+        {/* <Route
           path='/create-restaurant'
           element={<CreateRestaurantForm />}
         />
         <Route
           path='/'
           element={!usersRestaurant ? <CreateRestaurantForm /> : <Admin />}
+        />
+        <Route path='/payment' element={<PaymentSuccess />} /> */}
+        <Route
+          path='/*'
+          element={
+            !usersRestaurant ? <CreateRestaurantForm /> : <Admin />
+          }
         />
         <Route path='/payment' element={<PaymentSuccess />} />
       </Routes>

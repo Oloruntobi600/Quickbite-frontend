@@ -19,7 +19,9 @@ const Admin = () => {
   const dispatch=useDispatch()
   const navigate = useNavigate();
   const jwt=localStorage.getItem("jwt")
-  const {restaurant}=useSelector(store=>store)
+  // const {restaurant}=useSelector(store=>store)
+  const { restaurant } = useSelector(store => store.restaurant);
+  const { usersRestaurant } = useSelector((store) => store.restaurant);
   const handleClose=()=>{
 
   }
@@ -32,26 +34,42 @@ const Admin = () => {
   //     restaurantId:restaurant.usersRestaurant?.id,
   //   }))
   // },[])
+  
+  // useEffect(() => {
+  //   if (!restaurant.usersRestaurant) {
+  //     // If there is no restaurant for the user, redirect to the create restaurant page
+  //     // navigate('/admin/restaurants/create-restaurant'); // Redirect to create restaurant route
+  //     fetchRestaurantsOrder({
+  //       jwt,
+  //       restaurantId: restaurant.usersRestaurant?.id,
+  //     })
+  //   } else {
+  //     // Fetch restaurant categories and orders if a restaurant exists
+  //     dispatch(
+  //       getRestaurantsCategory({
+  //         jwt,
+  //         restaurantId: restaurant.usersRestaurant?.id,
+  //       })
+  //     );
+  //     dispatch(
+  //       fetchRestaurantsOrder({
+  //         jwt,
+  //         restaurantId: restaurant.usersRestaurant?.id,
+  //       })
+  //     );
+  //   }
+  // }, [dispatch, jwt, restaurant.usersRestaurant, navigate]);
+
   useEffect(() => {
-    if (!restaurant.usersRestaurant) {
-      // If there is no restaurant for the user, redirect to the create restaurant page
-      navigate('/admin/restaurants/create-restaurant'); // Redirect to create restaurant route
+    if (usersRestaurant && usersRestaurant[0]?.id) {
+      const restaurantId = usersRestaurant.id;
+      dispatch(getRestaurantsCategory({ jwt, restaurantId }));
+      dispatch(fetchRestaurantsOrder({ jwt, restaurantId }));
     } else {
-      // Fetch restaurant categories and orders if a restaurant exists
-      dispatch(
-        getRestaurantsCategory({
-          jwt,
-          restaurantId: restaurant.usersRestaurant?.id,
-        })
-      );
-      dispatch(
-        fetchRestaurantsOrder({
-          jwt,
-          restaurantId: restaurant.usersRestaurant?.id,
-        })
-      );
+      // Redirect to create restaurant page if no restaurant is found
+      navigate('/admin/restaurants/create-restaurant');
     }
-  }, [dispatch, jwt, restaurant.usersRestaurant, navigate]);
+  }, [dispatch, jwt, usersRestaurant, navigate]);
   return (
     <div>
       <div className='lg:flex justify-between'>
