@@ -1,7 +1,6 @@
-import { Box, Card, CardActions, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React, { useEffect } from 'react'
 import CreateIcon from '@mui/icons-material/Create';
-import { Create, Delete, Store } from '@mui/icons-material';
 import CreateFoodCategoryForm from './CreateFoodCategoryForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRestaurantsCategory } from '../../component/State/Authentication/restaurant/Action';
@@ -22,15 +21,13 @@ const FoodCategoryTable = () => {
  
   const restaurant = useSelector((state) => state.restaurant);
   const categories = useSelector(state => state.restaurant.categories || []);
-  const usersRestaurant = useSelector(state => state.restaurant.usersRestaurant);
 
   const dispatch= useDispatch();
   const jwt=localStorage.getItem("jwt")
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // console.log("Restaurant Details", restaurant)
-  // const categories = restaurant?.categories || [];
+
   useEffect(() => {
     console.log('Fetching categories for restaurant ID:', restaurant?.usersRestaurant?.[0]?.id);
     if (restaurant?.usersRestaurant?.[0]?.id) {

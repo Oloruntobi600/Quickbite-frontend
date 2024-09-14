@@ -1,5 +1,4 @@
 import { AddPhotoAlternate } from '@mui/icons-material';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Button, CircularProgress, Grid, IconButton, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import React, { useState } from 'react'

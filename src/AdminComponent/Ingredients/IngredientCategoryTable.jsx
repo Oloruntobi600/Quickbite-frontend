@@ -1,13 +1,12 @@
-import { Box, Card, CardActions, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React, { useEffect } from 'react'
 import CreateIcon from '@mui/icons-material/Create';
-import { Create, Delete } from '@mui/icons-material';
 import CreateIngredientCategoryForm from './CreateIngredientCategoryForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredientCategory } from '../../component/State/Ingredients/Action';
 
 
-const orders=[1,1,1,1,1,1,1];
+
 const style = {
   position: 'absolute',
   top: '50%',

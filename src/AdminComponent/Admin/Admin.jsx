@@ -10,9 +10,7 @@ import RestaurantDashboard from '../Dashboard/Dashboard'
 import Orders from '../Orders/Orders'
 import CreateMenuForm from '../Menu/CreateMenuForm'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRestaurantById, getRestaurantsCategory } from '../../component/State/Authentication/restaurant/Action'
-import { getMenuItemsByRestaurantId } from '../../component/State/Menu/Action'
-import { getUsersOrders } from '../../component/State/Order/Action'
+import { getRestaurantsCategory } from '../../component/State/Authentication/restaurant/Action'
 import { fetchRestaurantsOrder } from '../../component/State/Restaurant Order/Action'
 import { Button } from '@mui/material'
 
@@ -20,8 +18,6 @@ const Admin = () => {
   const dispatch=useDispatch()
   const navigate = useNavigate();
   const jwt=localStorage.getItem("jwt")
-  // const {restaurant}=useSelector(store=>store)
-  const { restaurant } = useSelector(store => store.restaurant);
   const { usersRestaurant } = useSelector((store) => store.restaurant);
   const handleClose=()=>{
   }
