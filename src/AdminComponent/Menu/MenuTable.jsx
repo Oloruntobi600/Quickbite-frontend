@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardActions, CardHeader, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Avatar, Box, Card, CardActions, CardHeader, Chip, CircularProgress, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React, { useEffect } from 'react'
 import CreateIcon from '@mui/icons-material/Create';
 import { Create, Delete } from '@mui/icons-material';
@@ -12,31 +12,37 @@ const MenuTable = () => {
   const dispatch=useDispatch();
   const jwt=localStorage.getItem("jwt");
   // const {restaurant,ingredients,menu}=useSelector((store)=>store);
-  const { restaurant, menu, ingredients } = useSelector((store) => store.restaurant);
+  // const { restaurant, menu, ingredients } = useSelector((store) => store.restaurant);
+  // const restaurant = useSelector((store) => store.restaurant.restaurantData); 
+  const usersRestaurant = useSelector((state) => state.restaurant.usersRestaurant);
+const menu = useSelector((store) => store.menu);
+console.log("Menu state:", menu);  // Accessing menuItemReducer's state
+const ingredients = useSelector((store) => store.restaurant.ingredients); // If ingredients are under restaurant
+
   const navigate=useNavigate();
 
-  useEffect(()=>{
-    // dispatch(getMenuItemsByRestaurantId({
-    //   restaurantId:restaurant.usersRestaurant.id,
-    // jwt:localStorage.getItem("jwt"),
-    // vegetarian:false,
-    // seasonal:false,
-    // nonveg:false,
-    // foodCategory:""
-    // }))  
-    if (restaurant && restaurant.usersRestaurant) {
-      dispatch(
-        getMenuItemsByRestaurantId({
-          jwt,
-          restaurantId: restaurant.usersRestaurant.id,
-          vegetarian: false,
-          nonVeg: false,
-          seasonal: false,
-          foodCategory: "",
-        })
-      );
+  useEffect(() => {
+    if (usersRestaurant && usersRestaurant.length > 0) {
+      const restaurantId = usersRestaurant[0]?.id;
+      console.log("Restaurant ID:", restaurantId); // Debugging line
+      if (restaurantId) {
+        dispatch(
+          getMenuItemsByRestaurantId({
+            jwt,
+            restaurantId,
+            vegetarian: false,
+            nonVeg: false,
+            seasonal: false,
+            foodCategory: '',
+          })
+        );
+      } else {
+        console.error("Restaurant ID is invalid or undefined");
+      }
+    } else {
+      console.log("No restaurant data available");
     }
-  }, [restaurant, dispatch, jwt]);
+  }, [usersRestaurant, dispatch, jwt]);
 
   const handleDeleteFood=(foodId)=>{
     dispatch(deleteFoodAction({foodId,jwt}))
@@ -66,16 +72,22 @@ const MenuTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {menu?.menuItems?.length > 0 ? (
+            {menu.loading ? (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">
+                    <CircularProgress />
+                  </TableCell>
+                </TableRow>
+              ): menu.menuItems.length > 0 ? (
                 menu.menuItems.map((item) => (
                   <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
                       <Avatar src={item.images[0]}></Avatar>
                     </TableCell>
-                    <TableCell align="right">{item?.name}</TableCell>
+                    <TableCell align="right">{item.name}</TableCell>
                     <TableCell align="right">
-                      {item?.ingredients.map((ingredient) => (
-                        <Chip key={ingredient?.id} label={ingredient?.name} />
+                      {item.ingredients.map((ingredient) => (
+                        <Chip key={ingredient.id} label={ingredient?.name} />
                       ))}
                     </TableCell>
                     <TableCell align="right">₦{item.price}</TableCell>

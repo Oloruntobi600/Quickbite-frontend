@@ -13,12 +13,14 @@ const RestaurantDetails = () => {
 
   console.log("checking restaurants", restaurant);
 
-  const handleRestaurantStatus=()=>{  
+  const handleRestaurantStatus=()=>{
+    if (restaurant.usersRestaurant?.[0]) {  
     dispatch(updateRestaurantStatus({
       restaurantId:restaurant.usersRestaurant?.[0]?.id,
       jwt:localStorage.getItem("jwt")
     }))
   };
+};
   return (
     <div className='lg:px-20 px-5 pb-10'>
       <div className='py-5 flex justify-center items-center gap-5'>
@@ -93,28 +95,28 @@ const RestaurantDetails = () => {
                   <p className="w-48">Country</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Code with Joe
+                    {restaurant.usersRestaurant?.[0]?.address?.country || "N/A"}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">City</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Code with Joe
+                    {restaurant.usersRestaurant?.[0]?.address?.city || "N/A"}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Postal Code</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Code with Joe
+                    {restaurant.usersRestaurant?.[0]?.address?.postalCode || "N/A"}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Street Address</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Code with Joe
+                    {restaurant.usersRestaurant?.[0]?.address?.streetAddress || "N/A"}
                   </p>
                 </div>
                

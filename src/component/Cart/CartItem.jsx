@@ -3,7 +3,8 @@ import { Chip, IconButton } from '@mui/material';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useDispatch } from 'react-redux';
-import { updateCartItem } from '../State/Cart/Action';
+import { removeCartItem, updateCartItem } from '../State/Cart/Action';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CartItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity); // Initial quantity
@@ -41,6 +42,20 @@ const CartItem = ({ item }) => {
     });
   };
 
+  const handleRemoveItem = () => {
+    if (!jwt) {
+      console.error('JWT is missing');
+      return;
+    }
+  
+    if (!item.id) {
+      console.error('Cart Item ID is missing');
+      return;
+    }
+  
+    dispatch(removeCartItem({ cartItemId: item.id, jwt }));
+  };
+
   return (
     <div className='px-5'>
       <div className='lg:flex items-center lg:space-x-5'>
@@ -69,6 +84,9 @@ const CartItem = ({ item }) => {
             </div>
           </div>
           <p>₦{item.totalPrice}</p>
+          <IconButton onClick={handleRemoveItem}>
+              <DeleteIcon /> {/* Button to remove the item */}
+            </IconButton>
         </div>
       </div>
       <div className="pt-3 space-x-2">

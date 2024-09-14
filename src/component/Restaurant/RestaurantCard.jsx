@@ -32,8 +32,8 @@ const RestaurantCard = ({item}) => {
       <div className={`${true?'cursor-pointer':"cursor-not-allowed"} relative`}>
         <img
         className='w-full h-[10rem] rounded-t-md object-cover'
-         src={item.images[1]} 
-         alt="" 
+        src={item.images && item.images.length > 0 ? item.images[0] : 'default_image_url'} 
+        alt={item.name || "Restaurant Image"}
          />
         <Chip
         size="small"

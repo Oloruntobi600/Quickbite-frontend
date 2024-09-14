@@ -7,15 +7,27 @@ const CreateIngredientCategoryForm = () => {
     const dispatch=useDispatch();
     const jwt=localStorage.getItem("jwt");
     const {restaurant}=useSelector(store=>store)
-    const [formData, setFormData] =useState({
-        name:"",
-    });
-    const handleSubmit =(e) =>{
+    const [formData, setFormData] =useState({name:""});
+    // const handleSubmit =(e) =>{
+    //     e.preventDefault();
+    //    const data={name:formData.name,restaurantId:restaurant.usersRestaurant.id}
+    //     console.log(formData);
+    //     dispatch(createIngredientCategory({data,jwt}))
+    // };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-       const data={name:formData.name,restaurantId:restaurant.usersRestaurant.id}
-        console.log(formData);
-        dispatch(createIngredientCategory({data,jwt}))
+        if (restaurant.usersRestaurant && restaurant.usersRestaurant.length > 0) {
+            const restaurantId = restaurant.usersRestaurant[0].id; // Ensure this is correctly accessed
+            const data = { name: formData.name, restaurantId };
+
+            console.log('Submitting data:', data);
+            dispatch(createIngredientCategory({ data, jwt }));
+        } else {
+            console.error('No restaurant found in state.');
+        }
     };
+
     const handleInputChange =(e)=>{
         const {name,value} = e.target
         setFormData({

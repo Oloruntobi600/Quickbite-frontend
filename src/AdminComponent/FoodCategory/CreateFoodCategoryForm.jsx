@@ -4,28 +4,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCategoryAction } from '../../component/State/Authentication/restaurant/Action';
 
 const CreateFoodCategoryForm = () => {
-    const {restaurant}=useSelector(store=>store);
+    // const {restaurant}=useSelector(store=>store);
+    const restaurant = useSelector(state => state.restaurant);
+
     const dispatch=useDispatch()
     const [formData, setFormData] =useState({
         categoryName:"",
-        restaurantId:"",
+       restaurantId: restaurant.usersRestaurant?.[0]?.id || "",
     });
     const handleSubmit =(e) =>{
         e.preventDefault();
-        const data={
+        
+        if (!formData.restaurantId) {
+            console.error("Restaurant ID is missing");
+            return;
+        }
+        
+        const data = {
             name: formData.categoryName,
-            restaurantId:{
-                id:restaurant.usersRestaurant?.id, 
-            },
+            restaurantId: formData.restaurantId,
         };
-        dispatch(createCategoryAction({reqData:data,jwt:localStorage.getItem("jwt")}))
-        console.log(data)
+        dispatch(createCategoryAction({ reqData: data, jwt: localStorage.getItem("jwt") }));
+        console.log('Submitting data:', data);
     };
+    
     const handleInputChange =(e)=>{
-        const {name,value} = e.target
-        setFormData({
-            ...formData,[name]:value
-        })
+        const {name,value} = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
     }
   return (
     <div className=''>

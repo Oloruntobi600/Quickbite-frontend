@@ -13,8 +13,8 @@ const orderStatus =[
 const OrderTable = () => {
   const dispatch=useDispatch();
   const jwt=localStorage.getItem("jwt");
-  // const {restaurant,restaurantOrder, ingredients,menu}=useSelector((store)=>store);
-  const { restaurant, restaurantOrder, menu, ingredients } = useSelector((store) => store.restaurant);
+  const { restaurant, menu, ingredients } = useSelector((store) => store.restaurant);
+  const restaurantOrder = useSelector((store) => store.restaurantOrder); 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const open = Boolean(anchorEl);
@@ -29,12 +29,14 @@ const OrderTable = () => {
     setSelectedOrderId(null);
   };
   useEffect(() => {
-    if (restaurant && restaurant.usersRestaurant) {
-      dispatch(fetchRestaurantsOrder({
-        jwt,
-        restaurantId: restaurant.usersRestaurant.id,
-      }));
-    }
+    console.log("Restaurant:", restaurant);
+        console.log("Restaurant Orders:", restaurantOrder);
+        if (restaurant && restaurant.usersRestaurant && restaurant.usersRestaurant.length > 0) {
+          dispatch(fetchRestaurantsOrder({
+              jwt,
+              restaurantId: restaurant.usersRestaurant[0].id,
+          }));
+      }
   }, [restaurant, dispatch, jwt]);
 
   const handleUpdateOrder = (orderStatus) => {
@@ -81,7 +83,9 @@ const OrderTable = () => {
                       </AvatarGroup>
                     </TableCell>
                     <TableCell align="right">{item.customer?.fullName}</TableCell>
-                    <TableCell align="right">${item.totalAmount}</TableCell>
+                    <TableCell align="right">
+                    ₦{item.items.reduce((total, orderItem) => total + (orderItem.food?.price || 0), 0)}
+        </TableCell>
                     <TableCell align="right">
                       {item.items.map((orderItem) => (
                         <p key={orderItem.id}>{orderItem.food?.name}</p>

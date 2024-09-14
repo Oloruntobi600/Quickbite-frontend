@@ -1,22 +1,26 @@
 import { Button, Card } from '@mui/material'
 import React from 'react'
 
-const OrderCard = () => {
+const OrderCard = ({ order }) => {
+  const orderImage = order.items[0]?.food?.images[0] || 'https://via.placeholder.com/64';
+  const orderName = order.items.map(item => item.food?.name).join(', ') || 'No items';
+  const orderPrice = order.totalPrice ? `₦${order.totalPrice}` : 'Price not available';
+
   return (
     <Card className='flex justify-between items-center p-5'>
       <div className='flex items-center space-x-5'>
         <img
-        className="h-16 w-16"
-        src='https://res.cloudinary.com/dcpesbd8q/image/upload/v1707904777/ufillbuz6lzjilw0rrc3.jpg'
-        alt=''
+          className="h-16 w-16"
+          src={orderImage}
+          alt={orderName}
         />
         <div>
-            <p>Pizza</p>
-            <p>₦499</p>
+          <p>{orderName}</p>
+          <p>{orderPrice}</p>
         </div>
       </div>
       <div>
-        <Button  className='cursor-not-allowed'> Completed</Button>
+        <Button className='cursor-not-allowed'>{order.orderStatus}</Button>
       </div>
     </Card>
   )

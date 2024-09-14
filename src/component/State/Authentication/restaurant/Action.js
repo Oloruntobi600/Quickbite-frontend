@@ -58,13 +58,13 @@ export const getAllRestaurantsAction = (token) => {
     };
 };
 
-export const getRestaurantById = (reqData) => {
+export const getRestaurantById = ({ jwt, restaurantId }) => {
     return async (dispatch) => {
         dispatch({ type: GET_RESTAURANT_BY_ID_REQUEST });
         try {
-            const response = await api.get(`api/restaurants/${reqData.restaurantId}`,{
+            const response = await api.get(`api/restaurants/${restaurantId}`,{
               headers: {
-                Authorization: `Bearer ${reqData.jwt}`,
+                Authorization: `Bearer ${jwt}`,
             },  
             });
         dispatch({ type: GET_RESTAURANT_BY_ID_SUCCESS,payload:response.data }); 
@@ -133,25 +133,7 @@ export const updateRestaurant = ({ restaurantId, restaurantData, jwt}) => {
     };
 };
 
-// export const deleteRestaurant = ({ restaurantId, jwt}) => {
-//     return async (dispatch) => {
-//         dispatch({ type: DELETE_RESTAURANT_REQUEST });
 
-//         try {
-//             const res = await api.delete(
-//                 `api/admin/restaurant/${restaurantId}`, {
-//               headers: {
-//                 Authorization: `Bearer ${jwt}`,
-//                 },  
-//             });
-//             console.log("delete restaurant", res.data);
-//         dispatch({ type: DELETE_RESTAURANT_SUCCESS, payload:restaurantId }); 
-//         }catch (error) {
-//             console.log("catch error", error)
-//         dispatch({ type: DELETE_RESTAURANT_FAILURE,payload:error });
-//         }
-//     };
-// };
 export const deleteRestaurant = ({ restaurantId, jwt }) => {
     return async (dispatch) => {
         if (!restaurantId) {
@@ -159,7 +141,7 @@ export const deleteRestaurant = ({ restaurantId, jwt }) => {
         }
         dispatch({ type: DELETE_RESTAURANT_REQUEST });
         try {
-            await api.delete(`/api/admin/restaurant/${restaurantId}`, {
+            await api.delete(`/api/admin/restaurants/${restaurantId}`, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
@@ -178,7 +160,7 @@ export const updateRestaurantStatus = ({ restaurantId, jwt}) => {
 
         try {
             const res = await api.put(
-                `api/admin/restaurant/${restaurantId}/status`,
+                `api/admin/restaurants/${restaurantId}/status`,
                 {},
                  {
               headers: {
@@ -275,27 +257,6 @@ export const getRestaurantsEvents = ({ restaurantId, jwt}) => {
     };
 };
 
-// export const createCategoryAction = ({ reqData, jwt }) => {
-//     return async (dispatch) => {
-//         dispatch({ type: CREATE_CATEGORY_REQUEST });
-
-//         try {
-//             const res = await api.post(`api/admin/category`, {
-//                 name: reqData.name,
-//                 restaurantId: 1,
-//             }, {
-//               headers: {
-//                 Authorization: `Bearer ${jwt}`,
-//                 },  
-//             });
-//         console.log("create category ", res.data);
-//         dispatch({ type: CREATE_CATEGORY_SUCCESS, payload:res.data }); 
-//         }catch (error) {
-//             console.log("catch -", error)
-//         dispatch({ type: CREATE_CATEGORY_FAILURE,payload:error });
-//         }
-//     };
-// };
 export const createCategoryAction = ({ reqData, jwt }) => {
     return async (dispatch) => {
         dispatch({ type: CREATE_CATEGORY_REQUEST });
@@ -330,11 +291,10 @@ export const getRestaurantsCategory = ({ jwt,restaurantId}) => {
                 Authorization: `Bearer ${jwt}`,
                 },  
             });
-        console.log("get restaurants category ", res.data);
-        dispatch({ type: GET_RESTAURANT_CATEGORY_SUCCESS, payload:res.data }); 
+            dispatch({ type: GET_RESTAURANT_CATEGORY_SUCCESS, payload: res.data });
         } catch (error) {
             console.log("catch error",error)
-        dispatch({ type: GET_RESTAURANT_CATEGORY_FAILURE,payload:error });
+        dispatch({ type: GET_RESTAURANT_CATEGORY_FAILURE,payload: error.response ? error.response.data.message : error.message });
         }
     };
 };

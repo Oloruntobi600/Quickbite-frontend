@@ -2,36 +2,42 @@ import { Card, CardActions, CardContent, CardMedia, IconButton, Typography } fro
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const EventCard = () => {
-  return (
-    <div>
-      <Card sx={{width:250}}>
-        <CardMedia 
-        sx={{height:200}}
-        image='https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=600' />
-
-        <CardContent>
-            <Typography variant='h10'>
-                Nigerian Fast Food
+const EventCard = ({ eventData })  => {
+    return (
+      <div>
+        <Card sx={{ width: 250 }}>
+          <CardMedia
+            sx={{ height: 200 }}
+            image={eventData.imageUrl || 'https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=600'} // Use a default image if eventData.imageUrl is not available
+          />
+          <CardContent>
+            <Typography variant='h6'>
+              {eventData.title || 'Event Title'}
             </Typography>
             <Typography variant='body2'>
-                50% off on your first order
+              {eventData.description || 'Event Description'}
             </Typography>
             <div className='py-2 space-y-2'>
-                <p>{"Nigeria"}</p>
-                <p className='text-sm text-blue-400'>December 14, 2024 12:00 AM</p>
-                <p className='text-sm text-red-400'>December 15, 2024 12:00 AM</p>
+              <p>{eventData.location || 'Event Location'}</p>
+              <p className='text-sm text-blue-400'>
+                {new Date(eventData.startDate).toLocaleString() || 'Start Date'}
+              </p>
+              <p className='text-sm text-red-400'>
+                {new Date(eventData.endDate).toLocaleString() || 'End Date'}
+              </p>
             </div>
-        </CardContent>
-
-        {false && <CardActions>
-            <IconButton>
-                <DeleteIcon/>
-            </IconButton>
-        </CardActions>}
-      </Card>
-    </div>
-  )
-}
+          </CardContent>
+  
+          {false && (
+            <CardActions>
+              <IconButton>
+                <DeleteIcon />
+              </IconButton>
+            </CardActions>
+          )}
+        </Card>
+      </div>
+    );
+  };
 
 export default EventCard

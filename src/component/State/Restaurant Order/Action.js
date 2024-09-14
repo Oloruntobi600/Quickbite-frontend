@@ -56,13 +56,14 @@ export const fetchRestaurantsOrder = ({restaurantId, orderStatus,jwt}) => {
                  },
                }
             );
-
+            console.log("Fetched Orders:", response.data);
             const orders = response?.data;
             dispatch({
                 type: GET_RESTAURANTS_ORDER_SUCCESS,
                 payload: orders,
             });
         } catch (error) {
+            console.error("Error fetching orders:", error);
             dispatch({type:GET_RESTAURANTS_ORDER_FAILURE, error})
         }
     };

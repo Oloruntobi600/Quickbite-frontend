@@ -47,7 +47,7 @@ export const addItemToCart = (reqData) => {
                 },
             });
             console.log("add item to cart ", data)
-            dispatch({type:ADD_ITEMS_TO_CART_SUCCESS, payload:data});
+            dispatch({type:ADD_ITEMS_TO_CART_SUCCESS, payload:data.food.cartItems[0]});
         }catch (error) {
             console.log("catch error ", error)
             dispatch({type:ADD_ITEMS_TO_CART_FAILURE, payload:error.message});

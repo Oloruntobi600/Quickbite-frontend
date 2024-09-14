@@ -14,6 +14,7 @@ const restaurantsOrderReducer = (state =initialState, action) => {
             return { ...state, loading: true, error:null };
 
         case GET_RESTAURANTS_ORDER_SUCCESS:
+            console.log("Reducer - Orders:", action.payload); 
             return { ...state, loading: false, orders: action.payload };
 
         case UPDATE_ORDER_STATUS_SUCCESS:

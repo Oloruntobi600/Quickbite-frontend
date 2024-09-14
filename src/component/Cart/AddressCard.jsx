@@ -2,23 +2,6 @@ import React from 'react'
 import HomeIcon from '@mui/icons-material/Home';
 import { Button, Card } from '@mui/material';
 
-// export const AddressCard = ({item,showButton,handleSelectAddress}) => {
-   
-//   return (
-//     <Card className="flex gap-5 w-64 p-5">
-//       <HomeIcon />
-//       <div className='space-y-3 text-gray-500'>
-//         <h1 className="font-semibold text-lg text-white">Home</h1>
-//         <p>
-//             Lagos, new building, oshodi market, 530068, Ago=palace, Nigeria
-//         </p>
-//        {showButton && (
-//          <Button variant="outlined" fullWidth onClick={() => handleSelectAddress(item)}>select</Button>
-//         )}
-//       </div>
-//     </Card>
-//   );
-// };
 
 const AddressCard = ({ item, showButton, handleSelectAddress }) => {
   return (
@@ -30,9 +13,9 @@ const AddressCard = ({ item, showButton, handleSelectAddress }) => {
           {item.streetAddress}, {item.city}, {item.state}, {item.pincode}, Nigeria
         </p>
         {showButton && (
-          <Button variant="outlined" fullWidth onClick={() => handleSelectAddress(item)}>
-            Create Order
-          </Button>
+         <Button variant="outlined" fullWidth onClick={() => handleSelectAddress(item)}>
+         Create Order
+       </Button>       
         )}
       </div>
     </Card>

@@ -19,26 +19,33 @@ const style = {
   p: 4,
 };
 const FoodCategoryTable = () => {
-  // const {restaurant} = useSelector((store) => store);
+ 
   const restaurant = useSelector((state) => state.restaurant);
+  const categories = useSelector(state => state.restaurant.categories || []);
+  const usersRestaurant = useSelector(state => state.restaurant.usersRestaurant);
+
   const dispatch= useDispatch();
   const jwt=localStorage.getItem("jwt")
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   // console.log("Restaurant Details", restaurant)
-  const categories = restaurant?.categories || [];
-
+  // const categories = restaurant?.categories || [];
   useEffect(() => {
-    if (restaurant?.usersRestaurant?.id) {
-      dispatch(
-        getRestaurantsCategory({
-          jwt,
-          restaurantId: restaurant.usersRestaurant.id,
-        })
-      );
+    console.log('Fetching categories for restaurant ID:', restaurant?.usersRestaurant?.[0]?.id);
+    if (restaurant?.usersRestaurant?.[0]?.id) {
+      dispatch(getRestaurantsCategory({
+        jwt,
+        restaurantId: restaurant.usersRestaurant[0].id,
+      }));
     }
-  }, [dispatch, jwt, restaurant]);
+  }, [dispatch, jwt, restaurant?.usersRestaurant?.[0]?.id]); // Add specific dependencies
+  
+      useEffect(() => {
+        console.log('Categories from state:', categories);
+    }, [categories]);
+    
+
 
 
   return (
@@ -63,7 +70,7 @@ const FoodCategoryTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories.map((item) => (
+            {(Array.isArray(categories) ? categories : []).map((item) => (
                 <TableRow
                   key={item.id} // Using item.id as key
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

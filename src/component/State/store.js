@@ -6,9 +6,10 @@ import menuItemReducer from './Menu/Reducer';
 import cartReducer from './Cart/Reducer';
 import { orderReducer } from './Order/Reducer';
 import { ingredientReducer } from './Ingredients/Reducer';
-import restaurantsOrderReducer from './Restaurant Order/Reducer';
+// import restaurantsOrderReducer from './Restaurant Order/Reducer';
 import restaurantReducer from './Authentication/restaurant/Reducer';
 import { thunk } from 'redux-thunk';
+import restaurantsOrderReducer from './Restaurant Order/Reducer';
 
 
 

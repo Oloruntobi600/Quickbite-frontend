@@ -14,6 +14,7 @@ import { getRestaurantById, getRestaurantsCategory } from '../../component/State
 import { getMenuItemsByRestaurantId } from '../../component/State/Menu/Action'
 import { getUsersOrders } from '../../component/State/Order/Action'
 import { fetchRestaurantsOrder } from '../../component/State/Restaurant Order/Action'
+import { Button } from '@mui/material'
 
 const Admin = () => {
   const dispatch=useDispatch()
@@ -23,46 +24,16 @@ const Admin = () => {
   const { restaurant } = useSelector(store => store.restaurant);
   const { usersRestaurant } = useSelector((store) => store.restaurant);
   const handleClose=()=>{
-
   }
-  // useEffect(()=>{
-  //     dispatch(getRestaurantsCategory({jwt,restaurantId:restaurant.usersRestaurant?.id,
-  //     })
-  //   );
-  //   dispatch(fetchRestaurantsOrder({
-  //     jwt,
-  //     restaurantId:restaurant.usersRestaurant?.id,
-  //   }))
-  // },[])
-  
-  // useEffect(() => {
-  //   if (!restaurant.usersRestaurant) {
-  //     // If there is no restaurant for the user, redirect to the create restaurant page
-  //     // navigate('/admin/restaurants/create-restaurant'); // Redirect to create restaurant route
-  //     fetchRestaurantsOrder({
-  //       jwt,
-  //       restaurantId: restaurant.usersRestaurant?.id,
-  //     })
-  //   } else {
-  //     // Fetch restaurant categories and orders if a restaurant exists
-  //     dispatch(
-  //       getRestaurantsCategory({
-  //         jwt,
-  //         restaurantId: restaurant.usersRestaurant?.id,
-  //       })
-  //     );
-  //     dispatch(
-  //       fetchRestaurantsOrder({
-  //         jwt,
-  //         restaurantId: restaurant.usersRestaurant?.id,
-  //       })
-  //     );
-  //   }
-  // }, [dispatch, jwt, restaurant.usersRestaurant, navigate]);
+
+  const handleGoHome = () => {
+    navigate('/'); // Navigates to the homepage
+  };
+ 
 
   useEffect(() => {
     if (usersRestaurant && usersRestaurant[0]?.id) {
-      const restaurantId = usersRestaurant.id;
+      const restaurantId = usersRestaurant[0].id;
       dispatch(getRestaurantsCategory({ jwt, restaurantId }));
       dispatch(fetchRestaurantsOrder({ jwt, restaurantId }));
     } else {
@@ -77,6 +48,14 @@ const Admin = () => {
           <AdminSideBar handleClose={handleClose}/>
         </div>
         <div className='lg:w-[80%]'>
+        <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={handleGoHome}
+            style={{ margin: '20px' }}
+          >
+            Go Back Home
+          </Button>
           <Routes>
             <Route path='/' element={<RestaurantDashboard/>}/>
             <Route path='/orders' element={<Orders/>}/>

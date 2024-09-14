@@ -20,7 +20,7 @@ export const orderReducer = (state = initialState, { type, payload }) => {
             return { ...state, error:null, loading:false, orders:payload };
 
         case GET_USERS_ORDERS_FAILURE:
-            return { ...state, error:payload, loading:true };
+            return { ...state, error:payload, loading:false };
 
     default:
       return state;

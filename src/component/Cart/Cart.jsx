@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 import { AddLocation } from '@mui/icons-material';
 import { Box, Button, Card, Divider, Grid, Modal, TextField } from '@mui/material';
@@ -8,6 +8,8 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../State/Order/Action';
 import { useNavigate } from 'react-router-dom';
+import { clearCartAction } from '../State/Cart/Action';
+import { getRestaurantByUserId } from '../State/Authentication/restaurant/Action';
 
 export const style = {
   position: 'absolute',
@@ -37,19 +39,27 @@ const validationSchema = Yup.object().shape({
 
 const Cart = () => {
   const [open, setOpen] = React.useState(false);
-  // const { cart,auth } = useSelector(store => store.cart);
   const [addresses, setAddresses] = useState([]); // State to manage addresses
-  const auth  = useSelector(store => store.auth);
-  console.log('Auth state:', auth);
-const { cart } = useSelector(store => store.cart);
-const navigate = useNavigate();  // Use the navigate hook
+  const auth = useSelector((state) => state.auth); // if auth is directly under state
+  const { cart } = useSelector(store => store.cart);
+  const usersRestaurant = useSelector((state) => state.restaurant.usersRestaurant);
+  const { restaurant } = useSelector(store => store);
+  const jwt=localStorage.getItem("jwt")
+  // const usersRestaurant = restaurant.usersRestaurant?.[0];
 
-  const dispatch=useDispatch()
+
+  const navigate = useNavigate();  // Use the navigate hook
+
+  const dispatch=useDispatch();
   const cartItems = cart?.item || [];
 
-  console.log('Cart state:', cart); // Log entire cart state
-  console.log('Cart Items Length:', cartItems.length); // Log cart items length
-
+  useEffect(() => {
+    if (usersRestaurant && usersRestaurant[0]?.id) {
+      const restaurantId = usersRestaurant[0].id;
+      dispatch(getRestaurantByUserId({ jwt, restaurantId }));
+    };
+   }, [auth.user, dispatch]);
+  
   // Calculate totals based on cart state
   const itemTotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
   const deliveryFee = 21; // Example value
@@ -84,16 +94,16 @@ const navigate = useNavigate();  // Use the navigate hook
 
   const createOrderUsingSelectedAddress = (address) => {
     const user = auth?.user;
-
-    if (!user) {
-      console.error('User information is not available');
+    
+    if (!user || !usersRestaurant) {
+      console.error('User or usersRestaurant is not available');
       return;
     }
 
     const data = {
       jwt: localStorage.getItem('jwt'),
       order: {
-        restaurantId: cartItems[0].food?.restaurant.id,
+        restaurantId: usersRestaurant.id,
         deliveryAddress: {
           fullName: user.fullName,
           streetAddress: address.streetAddress,
@@ -101,24 +111,32 @@ const navigate = useNavigate();  // Use the navigate hook
           state: address.state,
           postalCode: address.pincode,
           country: 'Nigeria'
+          
         }
       }
-    };
+    };  
+//     const token = localStorage.getItem('jwt');
+// console.log('JWT Token:', token); // Check if the token is being retrieved
+ 
 
-  // You could save this to session storage or context if you need to use it later
-  sessionStorage.setItem('data', JSON.stringify(data));
+//   sessionStorage.setItem('data', JSON.stringify(data));
 
-  // Navigate to the payment page
-  navigate('/payment');  // Adjust the route to match your application's route structure
+  dispatch(createOrder(data))
+    .then((response) => {
+      console.log('Order response:', response); 
+      const paymentUrl = response?.paymentUrl;  // Assuming the backend returns this
+      if (paymentUrl) {
+        window.location.href = paymentUrl;  // Redirect to payment page
+      } else {
+        console.error('Payment URL not available');
+      }
+    })
+    .then(() => dispatch(clearCartAction())) // Clear the cart
+    .catch((error) => {
+      console.error('Failed to create order or clear cart:', error);
+    });
 };
-    // try {
-    //   dispatch(createOrder(data));
-    //   setOpen(false);
-    // } catch (error) {
-    //   console.error('Tobi Failed to create order:', error);
-    //   // Handle error, e.g., show a notification to the user
-    // }
-  // };
+
 
   const handleOpenAddressModel = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -217,11 +235,6 @@ const navigate = useNavigate();  // Use the navigate hook
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          > */}
            <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -229,11 +242,6 @@ const navigate = useNavigate();  // Use the navigate hook
               handleAddNewAddress(values);  // Add address to state
               resetForm();                  // Clear form inputs
             }}
-            // onSubmit={(values, { setSubmitting }) => {
-            //   handleSubmit(values);
-            //   setSubmitting(false);
-            //   handleClose();
-            // }}
           >
               {({ handleSubmit, errors, touched }) => (
                 <form onSubmit={handleSubmit}>

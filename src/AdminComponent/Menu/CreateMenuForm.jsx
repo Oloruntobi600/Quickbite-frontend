@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import { uploadImageToCloudinary } from '../util/uploadToCloudinary';
 import { useDispatch, useSelector } from 'react-redux';
-import { createMenuItem } from '../../component/State/Menu/Action';
+import { createMenuItem, getMenuItemsByRestaurantId } from '../../component/State/Menu/Action';
 import { getIngredientsOfRestaurant } from '../../component/State/Ingredients/Action';
 
 
@@ -29,17 +29,38 @@ const CreateMenuForm = () => {
   const jwt=localStorage.getItem("jwt");
   const {restaurant,ingredients}=useSelector(store=>store);
   const [uploadImage, setUploadImage]=useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  
+
   const formik=useFormik({
     initialValues,
     onSubmit: (values) =>{
       values.seasonal = !!values.seasonal;
         values.vegetarian = !!values.vegetarian;
     // values.restaurantId = restaurant?.usersRestaurant?.id;
-    values.restaurantId = restaurant?.usersRestaurant?.id || "";
-    dispatch(createMenuItem({menu:values,jwt}))
-      console.log("data ---", values)
-    },
-  });
+    values.restaurantId = Array.isArray(restaurant?.usersRestaurant) && restaurant.usersRestaurant.length > 0
+        ? restaurant.usersRestaurant[0]?.id || ""
+        : "";
+
+        dispatch(createMenuItem({ menu: values, jwt })).then(() => {
+          // Fetch updated menu items after creation
+          dispatch(getMenuItemsByRestaurantId({
+            jwt,
+            restaurantId: values.restaurantId,
+            vegetarian: false,
+            nonVeg: false,
+            seasonal: false,
+            foodCategory: "",
+          }));
+  
+          // Set success message and close the form
+          setSuccessMessage("Menu created successfully");
+          // if (onClose) onClose(); // Close the form
+        });
+      },
+    });
+  
   const handleImageChange=async(e)=>{
     const file= e.target.files[0]
     setUploadImage(true)
@@ -53,10 +74,11 @@ const CreateMenuForm = () => {
     formik.setFieldValue("images", updatedImages)
   };
 
-  useEffect(()=>{
-    dispatch(getIngredientsOfRestaurant({jwt,id:restaurant.usersRestaurant.id})
-  );
-  },[restaurant, dispatch, jwt]);
+  useEffect(() => {
+    if (Array.isArray(restaurant?.usersRestaurant) && restaurant.usersRestaurant.length > 0) {
+      dispatch(getIngredientsOfRestaurant({ jwt, id: restaurant.usersRestaurant[0]?.id }));
+    }
+  }, [restaurant, dispatch, jwt]);
 
   return (
     <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
@@ -240,6 +262,8 @@ const CreateMenuForm = () => {
       </Grid>
       <Button  variant="contained" color="primary" type="submit">Create Menu</Button>
       </form>
+       {/* Display Success Message */}
+       {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
      </div>
     </div>
   )

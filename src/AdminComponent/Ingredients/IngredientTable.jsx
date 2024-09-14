@@ -28,7 +28,7 @@ const IngredientTable = () => {
   const handleClose = () => setOpen(false);
 
   useEffect(()=>{
-    dispatch(getIngredientsOfRestaurant({jwt,id:restaurant.usersRestaurant.id})
+    dispatch(getIngredientsOfRestaurant({jwt,id:restaurant.usersRestaurant[0].id})
   );
   },[]);
 

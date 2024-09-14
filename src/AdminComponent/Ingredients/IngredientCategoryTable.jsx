@@ -29,7 +29,7 @@ const IngredientCategoryTable = () => {
   const jwt=localStorage.getItem("jwt")
 
   useEffect(()=>{
-    dispatch(getIngredientCategory({id:restaurant.usersRestaurant.id,jwt}))
+    dispatch(getIngredientCategory({id:restaurant.usersRestaurant[0].id,jwt}))
   },[])
   return (
     <Box>

@@ -26,6 +26,7 @@ export const getIngredientsOfRestaurant = ({ id, jwt}) => {
 export const createIngredient = ({ data, jwt}) => {
     return async (dispatch) => {
         try {
+            console.log("Sending data:", data);  // Debugging line
             const response = await api.post(`/api/admin/ingredients`, data, {
                     headers: {
                         Authorization: `Bearer ${jwt}`,
@@ -37,7 +38,11 @@ export const createIngredient = ({ data, jwt}) => {
                 payload: response.data,
             });
         } catch (error) {
-            console.log("error", error);
+            console.error("Error creating ingredient:", error.response ? error.response.data : error.message);
+            dispatch({
+                type: 'CREATE_INGREDIENT_FAILURE',
+                payload: error.response ? error.response.data : error.message
+            });
         }
     };
 };
@@ -57,7 +62,7 @@ export const createIngredientCategory = ({ data, jwt}) => {
                 payload: response.data,
             });
         } catch (error) {
-            console.log("error", error);
+            console.error("Error creating ingredient category:", error.response ? error.response.data : error.message);
         }
     };
 };

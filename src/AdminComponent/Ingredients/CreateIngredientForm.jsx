@@ -1,33 +1,51 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { createIngredient, createIngredientCategory } from '../../component/State/Ingredients/Action';
 
 const CreateIngredientForm = () => {
-    const {restaurant,ingredients}=useSelector(store=>store)
+    const {restaurant,ingredients}=useSelector(store=>store);
     const dispatch=useDispatch();
     const jwt=localStorage.getItem("jwt");
+
     const [formData, setFormData] =useState({
         name:"",
         categoryId:"",
+        restaurantId:"",
     });
+    useEffect(() => {
+      // Set restaurantId from state when component mounts or restaurant state changes
+      if (restaurant?.usersRestaurant[0]?.id) {
+          setFormData(prevData => ({
+              ...prevData,
+              restaurantId: restaurant.usersRestaurant[0]?.id
+          }));
+      }
+  }, [restaurant]);
+
     const handleSubmit =(e) =>{
         e.preventDefault();
+        if (!formData.restaurantId) {
+          console.error("Restaurant ID is missing.");
+          return;
+      }
         const data={
            ...formData,
-            restaurantId:restaurant.usersRestaurant.id
+           restaurantId: formData.restaurantId
         };
         dispatch(createIngredient({data,jwt}))
 
-        console.log(data)
+        console.log("Submitting data:", data);
         
     };
     const handleInputChange =(e)=>{
         const {name,value} = e.target;
-        setFormData({
-            ...formData,[name]:value
-        });
-    };
+        setFormData(prevData => ({
+          ...prevData,
+          [name]: value
+      }));
+  };
+
   return (
     <div className=''>
         <div className='p-5'>

@@ -18,19 +18,27 @@ const foodTypes = [
     { label: "Seasonal", value: "seasonal" }
 ];
 
-const menu = [1, 1, 1, 1, 1, 1];
 
 const RestaurantDetails = () => {
     const [foodType, setFoodType] = useState("all");
-    const navigate=useNavigate()
     const dispatch=useDispatch();
-    const jwt=localStorage.getItem("jwt")
-    const {auth,restaurant,menu}=useSelector(store=>store)
+    const jwt=localStorage.getItem("jwt");
+    const restaurant = useSelector(state => state.restaurant);
+    const categories = useSelector((state) => state.restaurant.categories);
+    const menuItems = useSelector((state) => state.menu.menuItems);
+    const loading = useSelector((state) => state.restaurant.loading);
+    const error = useSelector((state) => state.restaurant.error);
+
+  
+    
+
+
+
     const [selectedCategory, setSelectedCategory]=useState("");
 
     const [category, setCategory] = useState("");
 
-    const {id,city}=useParams();
+    const {id}=useParams();
 
     const handleFilter = (e) => {
         if (e.target.name === "food_type") {
@@ -54,23 +62,37 @@ const RestaurantDetails = () => {
 
     console.log("restaurant", restaurant)
 
-    useEffect(()=>{
-        dispatch(getRestaurantById({jwt,restaurantId:id}))
-        dispatch(getRestaurantsCategory({jwt,restaurantId:id}))
-        
-    },[])
+    useEffect(() => {
+        if (jwt) {
+            dispatch(getRestaurantById({ jwt, restaurantId: id }));
+            dispatch(getRestaurantsCategory({ jwt, restaurantId: id }));
+        }
+    }, [dispatch, id, jwt]);
 
-    useEffect(()=> {
-        dispatch(getMenuItemsByRestaurantId({
-            jwt,
-            restaurantId:id,
-            vegetarian:foodType ==="vegetarian",
-            nonVeg:foodType ==="non_vegetarian",
-            seasonal:foodType ==="seasonal",
-            foodCategory:selectedCategory,
-       })
-    );
-    },[selectedCategory,foodType])
+    useEffect(() => {
+        if (restaurant) {
+            dispatch(getMenuItemsByRestaurantId({
+                jwt,
+                restaurantId: id,
+                vegetarian: foodType === "vegetarian",
+                nonVeg: foodType === "non_vegetarian",
+                seasonal: foodType === "seasonal",
+                foodCategory: selectedCategory,
+            }));
+        }
+    }, [selectedCategory, foodType, dispatch, id, jwt, restaurant]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!restaurant) {
+        return <div>No restaurant data available.</div>;
+    }
 
 
     return (
@@ -140,9 +162,9 @@ const RestaurantDetails = () => {
                                 name="food_category" 
                                 value={selectedCategory}
                                 >
-                                    {restaurant.categories.map((item) => (
+                                    {categories.map((item) => (
                                         <FormControlLabel 
-                                            key={item}
+                                            key={item.name}
                                             value={item.name}
                                             control={<Radio />}
                                             label={item.name}
@@ -154,7 +176,9 @@ const RestaurantDetails = () => {
                     </div>
                 </div>
                 <div className="space-y-5 lg:w-[80%] lg:pl-10">
-                    {menu.menuItems.map((item) => <MenuCard item={item} />)}
+                {menuItems.map((item, index) => (
+                        <MenuCard key={item.id} item={item} /> // Ensure each item has a unique id
+                    ))}
                 </div>
             </section>
         </div>
