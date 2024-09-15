@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import HomeIcon from '@mui/icons-material/Home';
@@ -27,6 +27,7 @@ export const ProfileNavigation = (open, handleClose) => {
 
     const navigate=useNavigate();
     const dispatch=useDispatch();
+    const [drawerOpen, setDrawerOpen] = useState(!isSmallScreen);
 
     const handleNavigate=(item)=>{
       if(item.title==="Logout"){
