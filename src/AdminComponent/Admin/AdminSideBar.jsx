@@ -1,5 +1,5 @@
 import { Dashboard, ShoppingBag } from '@mui/icons-material'
-import React, { useState } from 'react'
+import React from 'react'
 import ShopTwoIcon from '@mui/icons-material/ShopTwo';
 import CategoryIcon from '@mui/icons-material/Category';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
@@ -23,9 +23,8 @@ const menu=[
     {title:"Logout", icon:<LogoutIcon/>, path:"/"},        
 ]
 
-const AdminSideBar = () => {
-    // const isSmallScreen=useMediaQuery("(max-width:1080px)")
-    const [isHovered, setIsHovered] = useState(false);
+const AdminSideBar = ({handleClose}) => {
+    const isSmallScreen=useMediaQuery("(max-width:1080px)")
     const navigate=useNavigate();
     const dispatch= useDispatch();
 
@@ -41,38 +40,56 @@ const AdminSideBar = () => {
   };
 
   return (
-    <div
-      // Container for hover trigger
-      onMouseEnter={() => setIsHovered(true)}  // Show sidebar on hover
-      onMouseLeave={() => setIsHovered(false)} // Hide sidebar when not hovered
-      style={{
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        height: '100vh',
-        width: isHovered ? '250px' : '50px', // Expand on hover
-        transition: 'width 0.3s ease', // Smooth transition
-        backgroundColor: '#fff',
-        boxShadow: '2px 0px 5px rgba(0, 0, 0, 0.1)',
-        zIndex: 1300
-      }}
-    >
-      <div className="w-full h-full flex flex-col justify-center text-xl gap-8 pt-16">
-        {menu.map((item, i) => (
-          <React.Fragment key={item.title}>
-            <div
-              onClick={() => handleNavigate(item)}
-              className="px-5 flex items-center space-x-5 cursor-pointer"
-            >
-              {item.icon}
-              {isHovered && <span>{item.title}</span>} {/* Show text only when hovered */}
+    <div>
+      <>
+      {/* <Drawer
+      variant={isSmallScreen?"temporary":"permanent"} 
+      onClose={handleClose} 
+      open={true} 
+      anchor='left' 
+      sx={{zIndex:1}}>
+
+        <div className='w-[70vw] lg:w-[20vw] h-screen flex flex-col justify-center text-xl space-y-[1.65rem]'>
+            {menu.map((item, i)=><>
+            <div  onClick={()=>handleNavigate(item)} className='px-5 flex items-center gap-5 cursor-pointer'>
+                {item.icon}
+                <span>{item.title}</span>
             </div>
-            {i !== menu.length - 1 && <Divider />}
-          </React.Fragment>
-        ))}
-      </div>
+           {i!==menu.length-1 && <Divider/>} 
+            </>)}
+        </div>
+
+      </Drawer> */}
+
+<Drawer
+            variant={isSmallScreen ? "temporary" : "permanent"}
+            anchor='left'
+            open
+            sx={{
+                width: '250px', // Adjust width as needed
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                    width: '250px', // Ensure the drawer width matches the above width
+                    position: 'fixed', // Fix the position
+                    height: '100%', // Full height
+                },
+            }}
+        >
+            <div className='w-[70vw] lg:w-[20vw] h-screen flex flex-col justify-center text-xl space-y-[1.65rem]'>
+                {menu.map((item, i) => (
+                    <React.Fragment key={item.title}> {/* Added key here */}
+                        <div onClick={() => handleNavigate(item)} className='px-5 flex items-center gap-5 cursor-pointer'>
+                            {item.icon}
+                            <span>{item.title}</span>
+                        </div>
+                        {i !== menu.length - 1 && <Divider />}
+                    </React.Fragment>
+                ))}
+            </div>
+        </Drawer>
+      </>
     </div>
-  );
-};
+  )
+}
 
 export default AdminSideBar

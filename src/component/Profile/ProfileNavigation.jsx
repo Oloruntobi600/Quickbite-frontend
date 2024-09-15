@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import HomeIcon from '@mui/icons-material/Home';
@@ -22,9 +22,9 @@ const menu = [
     { title: 'Events', icon: <EventIcon />, path: 'events' },
     { title: 'Logout', icon: <LogoutIcon />, path: 'logout' },
   ];
-export const ProfileNavigation = () => {
-    // const isSmallScreen = useMediaQuery("(max-width:900px)");
-    const [isHovered, setIsHovered] = useState(false);
+export const ProfileNavigation = (open, handleClose) => {
+    const isSmallScreen = useMediaQuery("(max-width:900px)");
+
     const navigate=useNavigate();
     const dispatch=useDispatch();
 
@@ -38,38 +38,36 @@ export const ProfileNavigation = () => {
     };
     
     return (
-      <div
-        // Container for hover trigger
-        onMouseEnter={() => setIsHovered(true)}  // Show sidebar on hover
-        onMouseLeave={() => setIsHovered(false)} // Hide sidebar when not hovered
-        style={{
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          height: '100vh',
-          width: isHovered ? '250px' : '50px', // Expand on hover
-          transition: 'width 0.3s ease', // Smooth transition
-          backgroundColor: '#fff',
-          boxShadow: '2px 0px 5px rgba(0, 0, 0, 0.1)',
-          zIndex: 1300
-        }}
+      <Drawer
+          variant={isSmallScreen ? "temporary" : "permanent"}
+          onClose={handleClose}
+          open={isSmallScreen ? open : true}
+          anchor='left'
+          sx={{
+              width: '250px', // Adjust width as needed
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                  width: '250px', // Ensure the drawer width matches the above width
+                  position: 'fixed', // Fix the position
+                  height: '100%', // Full height
+                  zIndex: 1, // Ensure it's above content but not too high
+              },
+          }}
       >
-        <div className="w-full h-full flex flex-col justify-center text-xl gap-8 pt-16">
-          {menu.map((item, i) => (
-            <React.Fragment key={item.title}>
-              <div
-                onClick={() => handleNavigate(item)}
-                className="px-5 flex items-center space-x-5 cursor-pointer"
-              >
-                {item.icon}
-                {isHovered && <span>{item.title}</span>} {/* Show text only when hovered */}
-              </div>
-              {i !== menu.length - 1 && <Divider />}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    );
-  };
+          <div className="h-full flex flex-col justify-start text-xl pt-16 gap-8">
+              {menu.map((item, i) => (
+                  <React.Fragment key={item.title}>
+                      <div onClick={() => handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
+                          {item.icon}
+                          <span>{item.title}</span>
+                      </div>
+                      {i !== menu.length - 1 && <Divider />}
+                  </React.Fragment>
+              ))}
+          </div>
+      </Drawer>
+  );
+};
+
 
 export default ProfileNavigation
