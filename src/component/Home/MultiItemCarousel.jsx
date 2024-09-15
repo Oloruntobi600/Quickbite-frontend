@@ -1,44 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { topMeels } from "./topMeels";
 import CarouselItem from "./CarouselItem";
-import "./MultiItemCarousel.css";
 
 const MultiItemCarousel = () => {
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const getSlidesToShow = () => {
+        if (windowSize.width < 600) return 1;
+        if (windowSize.width < 900) return 2;
+        if (windowSize.width < 1200) return 3;
+        return 5;
+    };
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 5,
+        slidesToShow: getSlidesToShow(),
         slidesToScroll: 1,
         autoplay:true,
         autoplaySpeed:2000,
-        arrows: false,
-        responsive: [
-            {
-              breakpoint: 1024, // For tablets and smaller devices
-              settings: {
-                slidesToShow: 3,
-              },
-            },
-            {
-              breakpoint: 768, // For mobile devices
-              settings: {
-                slidesToShow: 2,
-              },
-            },
-            {
-              breakpoint: 480, // For very small mobile devices
-              settings: {
-                slidesToShow: 1,
-              },
-            },
-          ],
+        arrows: false
       };
     return (
         <div>
+            {/* <Slider {...settings}>
+                {topMeels.map((item) =><CarouselItem image={item.image} title={item.title}/>)}
+            </Slider> */}
              <Slider {...settings}>
                 {topMeels.map((item, index) => (
                     <CarouselItem
