@@ -6,10 +6,11 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import EventIcon from '@mui/icons-material/Event';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Divider, Drawer, useMediaQuery } from '@mui/material';
+import { Box, Divider, Drawer, IconButton, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../component/State/Authentication/Action';
+import MenuIcon from '@mui/icons-material/Menu';
 
 
 const menu=[
