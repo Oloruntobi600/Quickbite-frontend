@@ -40,6 +40,9 @@ export const ProfileNavigation = (open, handleClose) => {
     if (isSmallScreen) {
       setDrawerOpen(false); // Close drawer after navigation on small screens
     }
+    const toggleDrawer = () => {
+      setDrawerOpen(!drawerOpen);
+    };
     
     return (
       <>
