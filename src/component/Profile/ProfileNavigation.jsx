@@ -23,7 +23,7 @@ const menu = [
     { title: 'Logout', icon: <LogoutIcon />, path: 'logout' },
   ];
 export const ProfileNavigation = (open, handleClose) => {
-    const isSmallScreen = useMediaQuery("(max-width:900px)");
+    const isSmallScreen = useMediaQuery("(max-width:650px)");
 
     const navigate=useNavigate();
     const dispatch=useDispatch();
@@ -38,22 +38,22 @@ export const ProfileNavigation = (open, handleClose) => {
     };
     
   return (
-        <div>
-            <Drawer 
-            variant={isSmallScreen ? "temporary" : "permanent"} 
-            onClose={handleClose} 
-            open={isSmallScreen ? open : true} 
-            anchor='left' 
-            sx={{zIndex: -1, position:"sticky"}}
-            >
-          <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8 ">
-          {menu.map((item, i)=><>
-          <div onClick={()=>handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
-              {item.icon}
-              <span>{item.title}</span>
-          </div>
-          {i!==menu.length-1 && <Divider/>}
-          </>)}
+    <div>
+      <Drawer 
+      variant={isSmallScreen ? "temporary" : "permanent"} 
+      onClose={handleClose} 
+      open={isSmallScreen ? open : true} 
+      anchor='left' 
+      sx={{zIndex: -1, position:"sticky"}}
+      >
+        <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8 ">
+{menu.map((item, i)=><>
+<div onClick={()=>handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
+    {item.icon}
+    <span>{item.title}</span>
+</div>
+{i!==menu.length-1 && <Divider/>}
+</>)}
         </div>
       </Drawer>
     </div>
