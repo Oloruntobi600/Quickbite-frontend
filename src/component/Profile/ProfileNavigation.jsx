@@ -23,7 +23,7 @@ const menu = [
     { title: 'Logout', icon: <LogoutIcon />, path: 'logout' },
   ];
 export const ProfileNavigation = (open, handleClose) => {
-    const isSmallScreen = useMediaQuery("(max-width:650px)");
+    const isSmallScreen = useMediaQuery("(max-width:900px)");
 
     const navigate=useNavigate();
     const dispatch=useDispatch();
@@ -37,27 +37,38 @@ export const ProfileNavigation = (open, handleClose) => {
         navigate(`/my-profile/${item.title.toLowerCase()}`)
     };
     
-  return (
-    <div>
-      <Drawer 
-      variant={isSmallScreen ? "temporary" : "permanent"} 
-      onClose={handleClose} 
-      open={isSmallScreen ? open : true} 
-      anchor='left' 
-      sx={{zIndex: -1, position:"sticky"}}
+    return (
+      <Drawer
+          variant={isSmallScreen ? "temporary" : "permanent"}
+          onClose={handleClose}
+          open={isSmallScreen ? true : undefined}
+          anchor='left'
+          sx={{
+              width: isSmallScreen ? '75vw' : '250px', // Adjust width for small screens
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                  width: isSmallScreen ? '75vw' : '250px',
+                  position: isSmallScreen ? 'absolute' : 'fixed',
+                  height: '100%',
+                  zIndex: 1,
+                  overflow: 'auto' // Allow scrolling if content overflows
+              },
+          }}
       >
-        <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8 ">
-{menu.map((item, i)=><>
-<div onClick={()=>handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
-    {item.icon}
-    <span>{item.title}</span>
-</div>
-{i!==menu.length-1 && <Divider/>}
-</>)}
-        </div>
+          <div className='h-full flex flex-col justify-start text-xl p-2'>
+              {menu.map((item, i) => (
+                  <React.Fragment key={item.title}>
+                      <div onClick={() => handleNavigate(item)} className='px-5 flex items-center gap-5 cursor-pointer'>
+                          {item.icon}
+                          <span>{item.title}</span>
+                      </div>
+                      {i !== menu.length - 1 && <Divider />}
+                  </React.Fragment>
+              ))}
+          </div>
       </Drawer>
-    </div>
   );
 };
+
 
 export default ProfileNavigation
