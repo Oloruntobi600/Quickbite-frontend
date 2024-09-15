@@ -7,7 +7,7 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import EventIcon from '@mui/icons-material/Event';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { AddReaction } from '@mui/icons-material';
-import { Box, Divider, Drawer, useMediaQuery } from '@mui/material';
+import { Divider, Drawer, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../State/Authentication/Action';
@@ -36,51 +36,71 @@ export const ProfileNavigation = (open, handleClose) => {
       else
         navigate(`/my-profile/${item.title.toLowerCase()}`)
     };
+
+    if (isSmallScreen) {
+      setDrawerOpen(false); // Close drawer after navigation on small screens
+  };
+
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
     
     return (
-      <Drawer
-        variant={isSmallScreen ? "temporary" : "persistent"} // Temporary on small screens, persistent on large screens
-        open
-        onClose={handleClose}
-        anchor='left'
-        sx={{
-          width: isSmallScreen ? '70vw' : '250px', // Narrower on small screens
-          '& .MuiDrawer-paper': {
-            width: isSmallScreen ? '70vw' : '250px',
-            height: '100%',
-          },
-        }}
-      >
-        <Box
-          className='flex flex-col justify-start text-xl p-2'
+      <>
+        {/* Menu Icon for Small Screens */}
+        {isSmallScreen && (
+          <IconButton onClick={toggleDrawer} sx={{ position: 'fixed', top: 16, left: 16 }}>
+            <MenuIcon />
+          </IconButton>
+        )}
+  
+        <Drawer
+          variant={isSmallScreen ? "temporary" : "persistent"} // Temporary on small screens, persistent on large screens
+          open={drawerOpen}
+          onClose={handleClose}
+          anchor='left'
           sx={{
-            height: '100%',
-            overflowY: 'auto',
+            width: isSmallScreen ? '70vw' : '250px', // Narrower on small screens
+            '& .MuiDrawer-paper': {
+              width: isSmallScreen ? '70vw' : '250px',
+              height: '100%',
+            },
           }}
         >
-          {menu.map((item, i) => (
-            <React.Fragment key={item.title}>
-              <Box
-                onClick={() => handleNavigate(item)}
-                className='px-3 flex items-center gap-3 cursor-pointer'
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '8px',
-                  '&:hover': {
-                    backgroundColor: '#f0f0f0',
-                  },
-                }}
-              >
-                {item.icon}
-                <span>{item.title}</span>
-              </Box>
-              {i !== menu.length - 1 && <Divider />}
-            </React.Fragment>
-          ))}
-        </Box>
-      </Drawer>
+          <Box
+            className='flex flex-col justify-start text-xl p-2'
+            sx={{
+              height: '100%',
+              overflowY: 'auto',
+            }}
+          >
+            {menu.map((item, i) => (
+              <React.Fragment key={item.title}>
+                <Box
+                  onClick={() => handleNavigate(item)}
+                  className='px-3 flex items-center gap-3 cursor-pointer'
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '8px',
+                    '&:hover': {
+                      backgroundColor: '#f0f0f0',
+                    },
+                  }}
+                >
+                  {item.icon}
+                  <span>{item.title}</span>
+                </Box>
+                {i !== menu.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </Box>
+        </Drawer>
+      </>
     );
   };
+  
+  
 
 export default ProfileNavigation
