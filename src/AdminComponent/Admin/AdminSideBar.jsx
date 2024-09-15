@@ -23,7 +23,7 @@ const menu=[
     {title:"Logout", icon:<LogoutIcon/>, path:"/"},        
 ]
 
-const AdminSideBar = ({handleClose}) => {
+const AdminSideBar = ({handleClose, isOpen}) => {
     const isSmallScreen=useMediaQuery("(max-width:1080px)")
     const navigate=useNavigate();
     const dispatch= useDispatch();
@@ -42,29 +42,31 @@ const AdminSideBar = ({handleClose}) => {
   return (
     <div>
       <>
-        <Drawer
-            variant={isSmallScreen ? "temporary" : "permanent"}
-            onClose={handleClose}
-            open={isSmallScreen ? open : true}
-            anchor='left'
-            sx={{
-              width: isSmallScreen ? "50vw" : "20vw",  // Adjust width based on screen size
-              zIndex: isSmallScreen ? 1300 : "auto",    // zIndex for temporary drawers
-              position: isSmallScreen ? "fixed" : "relative" // Only fixed in small screens
-            }}
-        >
-           <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8">
-    {menu.map((item, i) => (
-      <>
-        <div onClick={() => handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
-          {item.icon}
-          <span>{item.title}</span>
-        </div>
-        {i !== menu.length - 1 && <Divider />}
-      </>
-    ))}
-  </div>
-        </Drawer>
+
+
+      <Drawer
+                variant={isSmallScreen ? "temporary" : "permanent"}
+                onClose={handleClose}
+                open={isSmallScreen ? isOpen : true} 
+                anchor='left'
+                sx={{
+                    width: isSmallScreen ? "50vw" : "20vw",  // Adjust width based on screen size
+                    zIndex: isSmallScreen ? 1300 : "auto",    // zIndex for temporary drawers
+                    position: isSmallScreen ? "fixed" : "relative" // Only fixed in small screens
+                }}
+            >
+                <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8">
+                    {menu.map((item, i) => (
+                        <React.Fragment key={item.title}>
+                            <div onClick={() => handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
+                                {item.icon}
+                                <span>{item.title}</span>
+                            </div>
+                            {i !== menu.length - 1 && <Divider />}
+                        </React.Fragment>
+                    ))}
+                </div>
+            </Drawer>
       </>
     </div>
   )
