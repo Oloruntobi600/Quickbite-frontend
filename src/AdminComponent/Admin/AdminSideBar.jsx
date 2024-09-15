@@ -1,5 +1,5 @@
 import { Dashboard, ShoppingBag } from '@mui/icons-material'
-import React from 'react'
+import React, { useState } from 'react'
 import ShopTwoIcon from '@mui/icons-material/ShopTwo';
 import CategoryIcon from '@mui/icons-material/Category';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
@@ -23,8 +23,9 @@ const menu=[
     {title:"Logout", icon:<LogoutIcon/>, path:"/"},        
 ]
 
-const AdminSideBar = ({handleClose, isOpen}) => {
-    const isSmallScreen=useMediaQuery("(max-width:1080px)")
+const AdminSideBar = () => {
+    // const isSmallScreen=useMediaQuery("(max-width:1080px)")
+    const [isHovered, setIsHovered] = useState(false);
     const navigate=useNavigate();
     const dispatch= useDispatch();
 
@@ -40,36 +41,38 @@ const AdminSideBar = ({handleClose, isOpen}) => {
   };
 
   return (
-    <div>
-      <>
-
-
-      <Drawer
-                variant={isSmallScreen ? "temporary" : "permanent"}
-                onClose={handleClose}
-                open={isSmallScreen ? isOpen : true} 
-                anchor='left'
-                sx={{
-                    width: isSmallScreen ? "50vw" : "20vw",  // Adjust width based on screen size
-                    zIndex: isSmallScreen ? 1300 : "auto",    // zIndex for temporary drawers
-                    position: isSmallScreen ? "fixed" : "relative" // Only fixed in small screens
-                }}
+    <div
+      // Container for hover trigger
+      onMouseEnter={() => setIsHovered(true)}  // Show sidebar on hover
+      onMouseLeave={() => setIsHovered(false)} // Hide sidebar when not hovered
+      style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        height: '100vh',
+        width: isHovered ? '250px' : '50px', // Expand on hover
+        transition: 'width 0.3s ease', // Smooth transition
+        backgroundColor: '#fff',
+        boxShadow: '2px 0px 5px rgba(0, 0, 0, 0.1)',
+        zIndex: 1300
+      }}
+    >
+      <div className="w-full h-full flex flex-col justify-center text-xl gap-8 pt-16">
+        {menu.map((item, i) => (
+          <React.Fragment key={item.title}>
+            <div
+              onClick={() => handleNavigate(item)}
+              className="px-5 flex items-center space-x-5 cursor-pointer"
             >
-                <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8">
-                    {menu.map((item, i) => (
-                        <React.Fragment key={item.title}>
-                            <div onClick={() => handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
-                                {item.icon}
-                                <span>{item.title}</span>
-                            </div>
-                            {i !== menu.length - 1 && <Divider />}
-                        </React.Fragment>
-                    ))}
-                </div>
-            </Drawer>
-      </>
+              {item.icon}
+              {isHovered && <span>{item.title}</span>} {/* Show text only when hovered */}
+            </div>
+            {i !== menu.length - 1 && <Divider />}
+          </React.Fragment>
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default AdminSideBar
