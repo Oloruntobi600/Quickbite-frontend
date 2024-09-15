@@ -6,7 +6,7 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import EventIcon from '@mui/icons-material/Event';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Box, Divider, Drawer, useMediaQuery } from '@mui/material';
+import { Divider, Drawer, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../component/State/Authentication/Action';
@@ -41,52 +41,48 @@ const AdminSideBar = ({handleClose}) => {
 
   return (
     <Drawer
-        variant="persistent"
-        anchor='left'
-        open
-        sx={{
-            width: isSmallScreen ? '70px' : '250px', // Adjust width based on screen size
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-                width: isSmallScreen ? '70px' : '250px', // Ensure the drawer width matches the above width
-                position: 'relative', // Ensure it doesn't overlay
-                height: '100%', // Full height
-                overflow: 'auto', // Allow scrolling if content overflows
-            },
-        }}
+      variant={isSmallScreen ? "temporary" : "persistent"} // Temporary on small screens, persistent on large screens
+      open
+      onClose={handleClose}
+      anchor='left'
+      sx={{
+        width: isSmallScreen ? '70vw' : '250px', // Narrower on small screens
+        '& .MuiDrawer-paper': {
+          width: isSmallScreen ? '70vw' : '250px',
+          height: '100%',
+        },
+      }}
     >
-        <Box
-            className='flex flex-col justify-start text-xl p-2'
-            sx={{
-                height: '100%',
-                overflowY: 'auto', // Allow scrolling if needed
-            }}
-        >
-            {menu.map((item, i) => (
-                <React.Fragment key={item.title}> {/* Added key here */}
-                    <Box
-                        onClick={() => handleNavigate(item)}
-                        className='px-3 flex items-center gap-3 cursor-pointer'
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '8px',
-                            borderRadius: '4px',
-                            '&:hover': {
-                                backgroundColor: '#f0f0f0',
-                            },
-                        }}
-                    >
-                        {item.icon}
-                        <span>{item.title}</span>
-                    </Box>
-                    {i !== menu.length - 1 && <Divider />}
-                </React.Fragment>
-            ))}
-        </Box>
+      <Box
+        className='flex flex-col justify-start text-xl p-2'
+        sx={{
+          height: '100%',
+          overflowY: 'auto',
+        }}
+      >
+        {menu.map((item, i) => (
+          <React.Fragment key={item.title}>
+            <Box
+              onClick={() => handleNavigate(item)}
+              className='px-3 flex items-center gap-3 cursor-pointer'
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '8px',
+                '&:hover': {
+                  backgroundColor: '#f0f0f0',
+                },
+              }}
+            >
+              {item.icon}
+              <span>{item.title}</span>
+            </Box>
+            {i !== menu.length - 1 && <Divider />}
+          </React.Fragment>
+        ))}
+      </Box>
     </Drawer>
-);
-}
-
+  );
+};
 
 export default AdminSideBar
