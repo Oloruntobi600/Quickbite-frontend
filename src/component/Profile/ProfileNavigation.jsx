@@ -42,19 +42,25 @@ export const ProfileNavigation = (open, handleClose) => {
       <Drawer 
       variant={isSmallScreen ? "temporary" : "permanent"} 
       onClose={handleClose} 
-      open={isSmallScreen ? open : true} 
-      anchor='left' 
-      sx={{zIndex: -1, position:"sticky"}}
-      >
-        <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8 ">
-{menu.map((item, i)=><>
-<div onClick={()=>handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
+      open={isSmallScreen ? open : true}
+      anchor='left'
+      sx={{
+        width: isSmallScreen ? "50vw" : "20vw",  // Adjust width based on screen size
+        zIndex: isSmallScreen ? 1300 : "auto",    // zIndex for temporary drawers
+        position: isSmallScreen ? "fixed" : "relative" // Only fixed in small screens
+      }}
+  >
+     <div className="w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center text-xl pt-16 gap-8">
+{menu.map((item, i) => (
+<>
+  <div onClick={() => handleNavigate(item)} className="px-5 flex items-center space-x-5 cursor-pointer">
     {item.icon}
     <span>{item.title}</span>
+  </div>
+  {i !== menu.length - 1 && <Divider />}
+</>
+))}
 </div>
-{i!==menu.length-1 && <Divider/>}
-</>)}
-        </div>
       </Drawer>
     </div>
   );
