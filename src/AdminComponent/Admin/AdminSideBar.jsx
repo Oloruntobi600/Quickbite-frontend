@@ -1,15 +1,16 @@
 import { Dashboard, ShoppingBag } from '@mui/icons-material'
-import React from 'react'
+import React, { useState } from 'react'
 import ShopTwoIcon from '@mui/icons-material/ShopTwo';
 import CategoryIcon from '@mui/icons-material/Category';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import EventIcon from '@mui/icons-material/Event';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Divider, Drawer, useMediaQuery } from '@mui/material';
+import { Divider, Drawer, IconButton, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../component/State/Authentication/Action';
+import MenuIcon from '@mui/icons-material/Menu';
 
 
 const menu=[
@@ -27,6 +28,7 @@ const AdminSideBar = ({handleClose}) => {
     const isSmallScreen=useMediaQuery("(max-width:1080px)")
     const navigate=useNavigate();
     const dispatch= useDispatch();
+    const [drawerOpen, setDrawerOpen] = useState(!isSmallScreen);
 
     const handleNavigate = (item) => {
       if (item.title === "Logout") {
@@ -36,53 +38,58 @@ const AdminSideBar = ({handleClose}) => {
       } else {
         navigate(`/admin/restaurants${item.path}`); // Adjust path if necessary
       }
-      console.log("Navigating to:", `/admin/restaurants${item.path}`);
+      if (isSmallScreen) {
+        setDrawerOpen(false); // Close drawer after navigation on small screens
+      }
   };
 
   return (
-    <div>
-      <>
-      {/* <Drawer
-      variant={isSmallScreen?"temporary":"permanent"} 
-      onClose={handleClose} 
-      open={true} 
-      anchor='left' 
-      sx={{zIndex:1}}>
+    <>
+      {/* Menu Icon for Small Screens */}
+      {isSmallScreen && (
+        <IconButton
+          onClick={toggleDrawer}
+          sx={{ position: 'fixed', top: 16, left: 16, zIndex: 2000 }}
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
 
-        <div className='w-[70vw] lg:w-[20vw] h-screen flex flex-col justify-center text-xl space-y-[1.65rem]'>
-            {menu.map((item, i)=><>
-            <div  onClick={()=>handleNavigate(item)} className='px-5 flex items-center gap-5 cursor-pointer'>
+      <Drawer
+        variant={isSmallScreen ? "temporary" : "permanent"} // Temporary on mobile, permanent on larger screens
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        anchor='left'
+        sx={{
+          width: isSmallScreen ? '60vw' : '250px', // Reduce width for smaller screens
+          '& .MuiDrawer-paper': {
+            width: isSmallScreen ? '60vw' : '250px',
+            boxSizing: 'border-box',
+          },
+        }}
+      >
+        <div className='w-full h-screen flex flex-col justify-start text-xl space-y-4 p-2'>
+          {menu.map((item, i) => (
+            <React.Fragment key={item.title}>
+              <div
+                onClick={() => handleNavigate(item)}
+                className='flex items-center gap-3 cursor-pointer px-3 py-2'
+                sx={{
+                  '&:hover': {
+                    backgroundColor: '#f0f0f0',
+                  },
+                }}
+              >
                 {item.icon}
                 <span>{item.title}</span>
-            </div>
-           {i!==menu.length-1 && <Divider/>} 
-            </>)}
+              </div>
+              {i !== menu.length - 1 && <Divider />}
+            </React.Fragment>
+          ))}
         </div>
-
-      </Drawer> */}
-
-        <Drawer
-            variant={isSmallScreen ? "temporary" : "permanent"}
-            onClose={handleClose}
-            open={true}
-            anchor='left'
-            sx={{ zIndex: 1 }}
-        >
-            <div className='w-[70vw] lg:w-[20vw] h-screen flex flex-col justify-center text-xl space-y-[1.65rem]'>
-                {menu.map((item, i) => (
-                    <React.Fragment key={item.title}> {/* Added key here */}
-                        <div onClick={() => handleNavigate(item)} className='px-5 flex items-center gap-5 cursor-pointer'>
-                            {item.icon}
-                            <span>{item.title}</span>
-                        </div>
-                        {i !== menu.length - 1 && <Divider />}
-                    </React.Fragment>
-                ))}
-            </div>
-        </Drawer>
-      </>
-    </div>
-  )
-}
+      </Drawer>
+    </>
+  );
+};
 
 export default AdminSideBar
