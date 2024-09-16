@@ -12,10 +12,10 @@ const Profile = () => {
 
   return (
     <div className='lg:flex justify-between'>
-      <div className='sticky h-[80vh] lg:w-[20%]'>
+      <div className='sticky h-[8vh] lg:w-[20%]'>
         <ProfileNavigation open={openSideBar} handleClose={() => setOpenSideBar(false)} />
       </div>
-      <div className='lg:w-[80%] relative'>
+      <div className='lg:w-[80%] '>
       <Routes>
                     <Route path="/" element={<UserProfile />} />
                     <Route path="orders" element={<Orders />} />
