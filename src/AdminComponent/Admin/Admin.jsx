@@ -50,9 +50,12 @@ const Admin = () => {
             color="primary"
             onClick={handleGoHome}
             style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
+              position: 'fixed',
+              top: '10px',
+              left: '50px',
+              padding: '5px 10px', // Reduces the padding
+              fontSize: '12px', // Reduces the font size
+              minWidth: 'auto',
             }}
           >
             Go Back Home

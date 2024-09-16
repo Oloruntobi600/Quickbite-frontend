@@ -21,7 +21,8 @@ const menu=[
     {title:"Ingredients", icon:<FastfoodIcon/>, path:"/ingredients"},
     {title:"Events", icon:<EventIcon/>, path:"/event"},
     {title:"Details", icon:<AdminPanelSettingsIcon/>, path:"/details"},
-    {title:"Logout", icon:<LogoutIcon/>, path:"/"},        
+    {title:"Logout", icon:<LogoutIcon/>, path:"/"},
+    {title:"Logout", icon:<LogoutIcon/>, path:"/"},          
 ]
 
 const AdminSideBar = ({handleClose}) => {
@@ -49,7 +50,7 @@ const AdminSideBar = ({handleClose}) => {
     <div>
       {/* Menu button for small screens */}
       {isSmallScreen && (
-        <IconButton onClick={() => toggleDrawer(true)} sx={{ position: 'fixed', top: 16, left: 16 }}>
+        <IconButton onClick={() => toggleDrawer(true)} sx={{ position: 'front', top: 8, left: 16 }}>
           <MenuIcon />
         </IconButton>
       )}

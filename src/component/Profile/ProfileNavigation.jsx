@@ -45,7 +45,7 @@ export const ProfileNavigation = (open, handleClose) => {
       <div>
         {/* Menu button for small screens */}
         {isSmallScreen && (
-          <IconButton onClick={() => toggleDrawer(true)} sx={{ position: 'fixed', top: 16, left: 16 }}>
+          <IconButton onClick={() => toggleDrawer(true)} sx={{ position: 'front', top: 8, left: 16 }}>
             <MenuIcon />
           </IconButton>
         )}
