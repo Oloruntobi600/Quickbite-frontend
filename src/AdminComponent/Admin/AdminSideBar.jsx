@@ -48,12 +48,21 @@ const AdminSideBar = ({handleClose}) => {
 
   return (
     <div>
-      {/* Menu button for small screens */}
-      {isSmallScreen && (
-        <IconButton onClick={() => toggleDrawer(true)} sx={{ position: 'front', top: 8, left: 16 }}>
-          <MenuIcon />
-        </IconButton>
-      )}
+     {isSmallScreen && (
+  <IconButton
+    onClick={() => toggleDrawer(true)}
+    sx={{
+      position: 'front',
+      top: 10, // Distance from the top of the screen
+      left: 10, // Distance from the left of the screen
+      zIndex: 1200, // Ensures the button stays on top of other elements
+      fontSize: 30, // Adjust icon size as needed
+    }}
+  >
+    <MenuIcon sx={{ fontSize: 'inherit' }} />
+  </IconButton>
+)}
+
 
       <Drawer
         variant={isSmallScreen ? "temporary" : "permanent"}

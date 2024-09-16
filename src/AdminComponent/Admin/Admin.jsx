@@ -51,8 +51,8 @@ const Admin = () => {
             onClick={handleGoHome}
             style={{
               position: 'fixed',
-              top: '10px',
-              left: '50px',
+              top: '15px',
+              left: '70px',
               padding: '5px 10px', // Reduces the padding
               fontSize: '12px', // Reduces the font size
               minWidth: 'auto',
