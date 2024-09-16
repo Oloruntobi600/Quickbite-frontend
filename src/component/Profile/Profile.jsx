@@ -15,7 +15,7 @@ const Profile = () => {
       <div className='sticky h-[80vh] lg:w-[20%]'>
         <ProfileNavigation open={openSideBar} handleClose={() => setOpenSideBar(false)} />
       </div>
-      <div className='lg:w-[80%]'>
+      <div className='lg:w-[80%] relative'>
       <Routes>
                     <Route path="/" element={<UserProfile />} />
                     <Route path="orders" element={<Orders />} />
