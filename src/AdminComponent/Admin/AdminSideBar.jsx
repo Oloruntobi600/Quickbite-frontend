@@ -40,40 +40,29 @@ const AdminSideBar = ({handleClose}) => {
   };
 
   return (
-    <div>
-        <Drawer
-            variant={isSmallScreen ? "temporary" : "permanent"}
-            onClose={handleClose}
-            open={true}
-            anchor='left'
-            sx={{
-                zIndex: 1200,
-                width: isSmallScreen ? '70vw' : '20vw',
-                flexShrink: 0,
-                position: 'fixed', // Ensure the drawer is fixed
-                [`& .MuiDrawer-paper`]: {
-                    width: isSmallScreen ? '70vw' : '20vw',
-                    boxSizing: 'border-box',
-                    position: 'fixed', // Keep it fixed
-                },
-            }}
-        >
-            <div className='h-full flex flex-col justify-start text-xl space-y-[1.65rem] p-4'>
-                {menu.map((item, i) => (
-                    <React.Fragment key={item.title}>
-                        <div
-                            onClick={() => handleNavigate(item)}
-                            className='px-5 flex items-center gap-5 cursor-pointer'
-                        >
-                            {item.icon}
-                            <span>{item.title}</span>
-                        </div>
-                        {i !== menu.length - 1 && <Divider />}
-                    </React.Fragment>
-                ))}
+    <Drawer
+      variant={isSmallScreen ? 'temporary' : 'permanent'}
+      onClose={handleClose}
+      open={true}
+      anchor="left"
+      sx={{ zIndex: 1 }}
+    >
+      <div className="w-[70vw] lg:w-[20vw] h-screen flex flex-col text-xl space-y-[1.65rem]">
+        {menu.map((item, i) => (
+          <React.Fragment key={item.title}>
+            <div
+              onClick={() => handleNavigate(item)}
+              className="px-5 flex items-center gap-5 cursor-pointer"
+            >
+              {item.icon}
+              <span>{item.title}</span>
             </div>
-        </Drawer>
-    </div>
-);
+            {i !== menu.length - 1 && <Divider />}
+          </React.Fragment>
+        ))}
+      </div>
+    </Drawer>
+  );
 };
+
 export default AdminSideBar

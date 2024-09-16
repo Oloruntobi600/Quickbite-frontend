@@ -38,36 +38,32 @@ const Admin = () => {
     }
   }, [dispatch, jwt, usersRestaurant, navigate]);
   return (
-    <div>
-      <div className='lg:flex justify-between'>
-        <div>
-          <AdminSideBar handleClose={handleClose}/>
-        </div>
-        <div className='lg:w-[80%]'>
-        <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={handleGoHome}
-            style={{ margin: '20px' }}
-          >
-            Go Back Home
-          </Button>
-          <Routes>
-            <Route path='/' element={<RestaurantDashboard/>}/>
-            <Route path='/orders' element={<Orders/>}/>
-            <Route path='/menu' element={<Menu/>}/>
-            <Route path='/category' element={<FoodCategory/>}/>
-            <Route path='/ingredients' element={<Ingredients/>}/>
-            <Route path='/event' element={<Events/>}/>
-            <Route path='/details' element={<RestaurantDetails/>}/>
-            <Route path='/add-menu' element={<CreateMenuForm/>}/>
-          </Routes>
-
-        </div>
-
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <div>
+        <AdminSideBar handleClose={handleClose} />
+      </div>
+      <div className="flex-grow lg:w-[80%] p-4">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleGoHome}
+          style={{ margin: '20px' }}
+        >
+          Go Back Home
+        </Button>
+        <Routes>
+          <Route path="/" element={<RestaurantDashboard />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/category" element={<FoodCategory />} />
+          <Route path="/ingredients" element={<Ingredients />} />
+          <Route path="/event" element={<Events />} />
+          <Route path="/details" element={<RestaurantDetails />} />
+          <Route path="/add-menu" element={<CreateMenuForm />} />
+        </Routes>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Admin
