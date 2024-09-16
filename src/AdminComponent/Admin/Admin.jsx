@@ -41,33 +41,38 @@ const Admin = () => {
     <div>
       <div className='lg:flex justify-between'>
         <div>
-          <AdminSideBar handleClose={handleClose}/>
+          <AdminSideBar handleClose={handleClose} />
         </div>
-        <div className='lg:w-[80%]'>
-        <Button 
-            variant="contained" 
-            color="primary" 
+        <div className='lg:w-[80%] relative'>
+          {/* Go Back Home button in the top-right corner */}
+          <Button
+            variant="contained"
+            color="primary"
             onClick={handleGoHome}
-            style={{ margin: '20px' }}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+            }}
           >
             Go Back Home
           </Button>
+
           <Routes>
-            <Route path='/' element={<RestaurantDashboard/>}/>
-            <Route path='/orders' element={<Orders/>}/>
-            <Route path='/menu' element={<Menu/>}/>
-            <Route path='/category' element={<FoodCategory/>}/>
-            <Route path='/ingredients' element={<Ingredients/>}/>
-            <Route path='/event' element={<Events/>}/>
-            <Route path='/details' element={<RestaurantDetails/>}/>
-            <Route path='/add-menu' element={<CreateMenuForm/>}/>
+            <Route path='/' element={<RestaurantDashboard />} />
+            <Route path='/orders' element={<Orders />} />
+            <Route path='/menu' element={<Menu />} />
+            <Route path='/category' element={<FoodCategory />} />
+            <Route path='/ingredients' element={<Ingredients />} />
+            <Route path='/event' element={<Events />} />
+            <Route path='/details' element={<RestaurantDetails />} />
+            <Route path='/add-menu' element={<CreateMenuForm />} />
           </Routes>
-
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
+
 
 export default Admin
