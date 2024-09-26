@@ -92,13 +92,13 @@ export const searchMenuItem = ({keyword, jwt}) => {
     };
 };
 
-export const updateMenuItemsAVailability = ({foodId, jwt}) => {
+export const updateMenuItemsAVailability = ({foodId, available, jwt}) => {
     return async (dispatch) => {
         dispatch({type:UPDATE_MENU_ITEMS_AVAILABILITY_REQUEST});
         try {
             const { data } = await api.put(
                 `api/admin/food/${foodId}`, 
-                {},
+                { available },
                 {
                     headers: {
                         Authorization: `Bearer ${jwt}`,

@@ -4,20 +4,16 @@ import CreateIcon from '@mui/icons-material/Create';
 import { Create, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteFoodAction, getMenuItemsByRestaurantId } from '../../component/State/Menu/Action';
+import { deleteFoodAction, getMenuItemsByRestaurantId, updateMenuItemsAVailability } from '../../component/State/Menu/Action';
 
 
 
 const MenuTable = () => {
   const dispatch=useDispatch();
   const jwt=localStorage.getItem("jwt");
-  // const {restaurant,ingredients,menu}=useSelector((store)=>store);
-  // const { restaurant, menu, ingredients } = useSelector((store) => store.restaurant);
-  // const restaurant = useSelector((store) => store.restaurant.restaurantData); 
   const usersRestaurant = useSelector((state) => state.restaurant.usersRestaurant);
-const menu = useSelector((store) => store.menu);
-console.log("Menu state:", menu);  // Accessing menuItemReducer's state
-const ingredients = useSelector((store) => store.restaurant.ingredients); // If ingredients are under restaurant
+  const menu = useSelector((store) => store.menu);
+  const ingredients = useSelector((store) => store.restaurant.ingredients); // If ingredients are under restaurant
 
   const navigate=useNavigate();
 
@@ -44,9 +40,15 @@ const ingredients = useSelector((store) => store.restaurant.ingredients); // If 
     }
   }, [usersRestaurant, dispatch, jwt]);
 
-  const handleDeleteFood=(foodId)=>{
-    dispatch(deleteFoodAction({foodId,jwt}))
-  }
+    const handleDeleteFood=(foodId)=>{
+      dispatch(deleteFoodAction({foodId,jwt}))
+    }
+
+
+    const toggleAvailability = (foodId, currentAvailability) => {
+      const newAvailability = !currentAvailability; // Toggle availability
+      dispatch(updateMenuItemsAVailability({ foodId, available: newAvailability, jwt }));
+  };
   return (
     <Box>
       <Card className='mt-1'>
@@ -91,7 +93,13 @@ const ingredients = useSelector((store) => store.restaurant.ingredients); // If 
                       ))}
                     </TableCell>
                     <TableCell align="right">₦{item.price}</TableCell>
-                    <TableCell align="right">{item.available ? "in_stock" : "out_of_stock"}</TableCell>
+                    <TableCell align='right'>
+                      <Chip
+                        label={item.available ? 'In Stock' : 'Out of Stock'}
+                        color={item.available ? 'success' : 'error'}
+                        onClick={() => toggleAvailability(item.id, item.available)}
+                      />
+                    </TableCell>
                     <TableCell align="right">
                       <IconButton color="primary" onClick={() => handleDeleteFood(item.id)}>
                         <Delete />

@@ -4,7 +4,10 @@ import {
     ADD_TO_FAVORITE_FAILURE, ADD_TO_FAVORITE_REQUEST, ADD_TO_FAVORITE_SUCCESS,
     GET_USER_FAILURE, GET_USER_REQUEST, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS,
     REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, LOGOUT,
-    GET_USER_SUCCESS
+    GET_USER_SUCCESS,
+    FORGOT_PASSWORD_REQUEST,
+    FORGOT_PASSWORD_SUCCESS,
+    FORGOT_PASSWORD_FAILURE
   } from './ActionTypes';
   
   const initialState = {
@@ -12,6 +15,7 @@ import {
     isAuthenticated: false,
     isLoading: false,
     error: null,
+    message: '',
     jwt: localStorage.getItem('jwt') || null,
     favorites: [],
     success: null,
@@ -29,7 +33,30 @@ import {
       case LOGIN_SUCCESS:
         return { ...state, isLoading: false, jwt: action.payload, success: 'Register success' , isAuthenticated: true};
 
-        case GET_USER_SUCCESS:
+        case FORGOT_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+      case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload, // Update with success message
+        error: null,
+      };
+
+      case FORGOT_PASSWORD_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+
+      case GET_USER_SUCCESS:
         return { ...state, isLoading: false, user: action.payload, favorites:action.payload.favorites };
       
       case ADD_TO_FAVORITE_SUCCESS:
@@ -53,6 +80,7 @@ import {
       
       default:
         return state;
-    }
+    };
+
   };
   

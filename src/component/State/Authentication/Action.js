@@ -3,6 +3,9 @@ import axios from 'axios';
 import { api, API_URL } from '../../config/api';
 import { 
   ADD_TO_FAVORITE_FAILURE, ADD_TO_FAVORITE_REQUEST, ADD_TO_FAVORITE_SUCCESS,
+  FORGOT_PASSWORD_FAILURE,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
   GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS,
   LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS 
 } from './ActionTypes';
@@ -23,6 +26,26 @@ export const registerUser = (reqData) => async (dispatch) => {
     dispatch({ type: REGISTER_FAILURE, payload: error });
     console.log('Error', error);
   }
+};
+
+export const forgotPassword = (email) => {
+  return async (dispatch) => {
+    dispatch({ type: FORGOT_PASSWORD_REQUEST });
+    
+    try {
+      const response = await axios.post(`${API_URL}/auth/forgot-password`, { email }); // Fixed backticks
+      dispatch({
+        type: FORGOT_PASSWORD_SUCCESS,
+        payload: 'Password reset email sent successfully',
+      });
+      // Optionally, you can show a success message
+    } catch (error) {
+      dispatch({
+        type: FORGOT_PASSWORD_FAILURE,
+        payload: error.response?.data?.message || 'An error occurred', // Capture error message
+      });
+    }
+  };
 };
 
 export const loginUser = (reqData) => async (dispatch) => {
@@ -85,3 +108,5 @@ export const logout = () => async (dispatch) => {
     console.log('Error', error);
   }
 };
+
+
